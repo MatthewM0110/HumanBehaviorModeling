@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class AgentParameterGeneration : MonoBehaviour {
 
+    private static System.Random random = new System.Random();
+
     [SerializeField]
     private GameObject spawnPoint;
     private AgentParameterChances agentParameterChances;
+    private AgentInitialSpeedGeneration agentInitialSpeedGeneration;
     private GameObject agentPrefab;
+
 
     public enum MovementPercentChange {
 
@@ -41,8 +45,8 @@ public class AgentParameterGeneration : MonoBehaviour {
 
        agentPrefab = Resources.Load<GameObject>("Agent");
        spawnPoint = GameObject.FindGameObjectWithTag("spawn");
-
-    }
+        agentInitialSpeedGeneration = gameObject.GetComponent<AgentInitialSpeedGeneration>();
+     }
 
     // Update is called once per frame
     void Update() {
@@ -50,18 +54,45 @@ public class AgentParameterGeneration : MonoBehaviour {
     }
 
     public void GenerateAgents() {
-        int agentPop = 50;
+        int agentPop = 10;
+        try {
+             agentPop = int.Parse(agentParameterChances.numberOfAgents.text);
+        } catch {
+             
+        }
+        GameObject[] spawnPoints = GameObject.FindGameObjectsWithTag("spawn");
+        for (int j = 0; j < spawnPoints.Length; j++) {
+            for (int i = 0; i < agentPop; i++) {
+
+                GameObject agent = Instantiate(agentPrefab, spawnPoints[j].transform.position, Quaternion.identity);
+                agent.transform.name = "Agent" + i;
+                AgentParameters agentParam = agent.AddComponent<AgentParameters>();
+                Gender gender = calcGender();
+                int age = calcAge();
+
+                agentParam.Gender = gender;
+                agentParam.Age = age;
+                Debug.Log(age + " " + gender);
+                agentParam.Speed = calcSpeed(age, gender);
+
+            }
+        }
+
+    }
+
+    private float calcSpeed(int age, Gender gender) {
 
 
-        for (int i = 0; i < agentPop; i++) {
+        if (gender.Equals(Gender.Male)) {
 
-            GameObject agent = Instantiate(agentPrefab, spawnPoint.transform.position, Quaternion.identity);
-            agent.transform.name = "Agent" + i;
-            AgentParameters agentParam = agent.AddComponent<AgentParameters>();
-            agentParam.Gender = calcGender();
-            
+           return (agentInitialSpeedGeneration.getMaleValueGivenKey(age));
+
+        } else {
+
+            return (agentInitialSpeedGeneration.getFemaleValueGivenKey(age));
 
         }
+       
 
 
     }
@@ -76,5 +107,14 @@ public class AgentParameterGeneration : MonoBehaviour {
         }
 
     }
+
+    private int calcAge() {
+
+        float min = agentParameterChances.minAge;
+        float max = agentParameterChances.maxAge;
+
+        return random.Next((int)min, (int)max + 1);
+    }
+
 
 }

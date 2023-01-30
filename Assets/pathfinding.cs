@@ -12,7 +12,7 @@ public class pathfinding : MonoBehaviour
     void Start()
     {
          agent = GetComponent<NavMeshAgent>();
-         agent.speed = Random.Range(3, 5);
+        
     }
 
     // Update is called once per frame

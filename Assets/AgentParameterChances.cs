@@ -8,7 +8,6 @@ using TMPro;
 public class AgentParameterChances : MonoBehaviour
 {
     
-
     // Start is called before the first frame update
     void Start()
     {
@@ -40,18 +39,20 @@ public class AgentParameterChances : MonoBehaviour
 
     [Header("Age")]
     [SerializeField]
-    Slider minAgeSlider;
+    public Slider minAgeSlider;
     [SerializeField]
-    TMP_Text minAgeDisplay;
+    public TMP_Text minAgeDisplay;
     [SerializeField]
-    Slider maxAgeSlider;
+    public Slider maxAgeSlider;
     [SerializeField]
-    TMP_Text maxAgeDisplay;
-    [Range(10, 99)]
-    public float minAge = 10;
-    [Range(10, 99)]
+    public TMP_Text maxAgeDisplay;
+    [Range(20, 99)]
+    public float minAge = 20;
+    [Range(20, 99)]
     public float maxAge = 99;
+    
     public void setMinAge(float newMinAge) {
+
         minAge = newMinAge;
         maxAgeSlider.minValue = minAge;
         minAgeSlider.maxValue = maxAge;
@@ -92,7 +93,10 @@ public class AgentParameterChances : MonoBehaviour
         maxPercentOfDisabledAgentsDisplay.text = "Maximum % of Disabled Agents: " + maxPercentOfDisabledAgents.ToString();
 
     }
-   
+
+    [Header("Agents")]
+    [SerializeField]
+    public TMP_InputField numberOfAgents;
 
 
 }
