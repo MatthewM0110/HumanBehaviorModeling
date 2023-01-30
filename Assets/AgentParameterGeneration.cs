@@ -7,13 +7,14 @@ public class AgentParameterGeneration : MonoBehaviour {
     [SerializeField]
     private GameObject spawnPoint;
     private AgentParameterChances agentParameterChances;
+    private GameObject agentPrefab;
 
     public enum MovementPercentChange {
 
-        None = 0,
-        WakingStick = 15,
-        Crutch = 10,
-        WheelChair = 10
+        None = 0, //0% change
+        WakingStick = 15, // 15% change 
+        Crutch = 10, // 10% change  
+        WheelChair = 10 // 10% change
 
     }
     public enum Gender {
@@ -38,6 +39,9 @@ public class AgentParameterGeneration : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
 
+       agentPrefab = Resources.Load<GameObject>("Agent");
+       spawnPoint = GameObject.FindGameObjectWithTag("spawn");
+
     }
 
     // Update is called once per frame
@@ -47,15 +51,15 @@ public class AgentParameterGeneration : MonoBehaviour {
 
     public void GenerateAgents() {
         int agentPop = 50;
-        GameObject agentPrefab = Resources.Load<GameObject>("Agent");
+
 
         for (int i = 0; i < agentPop; i++) {
-            GameObject agent = Instantiate(agentPrefab, null, spawnPoint.transform);
+
+            GameObject agent = Instantiate(agentPrefab, spawnPoint.transform.position, Quaternion.identity);
             agent.transform.name = "Agent" + i;
             AgentParameters agentParam = agent.AddComponent<AgentParameters>();
             agentParam.Gender = calcGender();
-
-
+            
 
         }
 

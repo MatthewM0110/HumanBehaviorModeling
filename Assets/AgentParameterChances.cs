@@ -59,6 +59,7 @@ public class AgentParameterChances : MonoBehaviour
 
     }
     public void setMaxAge(float newMaxAge) {
+
         maxAge = newMaxAge;
         maxAgeSlider.minValue = minAge;
         minAgeSlider.maxValue = maxAge;

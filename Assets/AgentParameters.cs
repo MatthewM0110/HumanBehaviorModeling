@@ -33,6 +33,7 @@ public class AgentParameters : MonoBehaviour
 
         maleMaterial = Resources.Load<Material>("Male");
         femaleMaterial = Resources.Load<Material>("Female");
+
         if (gender == AgentParameterGeneration.Gender.Male) {
             GetComponent<Renderer>().material = maleMaterial;
         } else {
