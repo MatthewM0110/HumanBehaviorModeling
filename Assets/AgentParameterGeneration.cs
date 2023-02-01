@@ -74,6 +74,7 @@ public class AgentParameterGeneration : MonoBehaviour {
                 agentParam.Age = age;
                 Debug.Log(age + " " + gender);
                 agentParam.Speed = calcSpeed(age, gender);
+                agentParam.EmergencyRecognition = calcEmergencyRecognition();
 
             }
         }
@@ -116,5 +117,15 @@ public class AgentParameterGeneration : MonoBehaviour {
         return random.Next((int)min, (int)max + 1);
     }
 
+    private EmergencyRecognition calcEmergencyRecognition() {
 
+        //Later will be affected by Environment Knowdlege and Experience
+        float generateRandomFloat = Random.Range(1, 99);
+
+        if(generateRandomFloat < 25) {
+            return EmergencyRecognition.Immediate;
+        }
+
+        return EmergencyRecognition.Lagging;
+    }
 }
