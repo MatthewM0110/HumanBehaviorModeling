@@ -4,8 +4,9 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class AgentParameters : MonoBehaviour {
-   
-   
+
+    private SimulationManager simulationManager;
+
     [Header("Agent Parameters")]
 
     [SerializeField] private AgentParameterGeneration.Gender gender;
@@ -37,6 +38,7 @@ public class AgentParameters : MonoBehaviour {
     // Start is called before the first frame update
     void Start()
     {
+        simulationManager = GameObject.Find("SimulationManager").GetComponent<SimulationManager>(); 
         navMeshAgent = gameObject.GetComponent<NavMeshAgent>();
         pathfinding = gameObject.GetComponent<pathfinding>();
 
@@ -45,6 +47,8 @@ public class AgentParameters : MonoBehaviour {
 
         maleMaterial = Resources.Load<Material>("Male");
         femaleMaterial = Resources.Load<Material>("Female");
+
+        TimeToEvacuate = 0;
 
         if (gender == AgentParameterGeneration.Gender.Male) {
             GetComponent<Renderer>().material = maleMaterial;
@@ -59,7 +63,10 @@ public class AgentParameters : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-       
+        if (simulationManager.simIsRunning) {
+            TimeToEvacuate += Time.deltaTime;
+        }
+        
 
     }
 
