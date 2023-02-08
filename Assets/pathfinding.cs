@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-public class pathfinding : MonoBehaviour
+public class pathfinding : MonoBehaviour 
+    //DEPRECIATED
 {
     public Transform goal;
     public NavMeshAgent agent;
@@ -11,14 +12,15 @@ public class pathfinding : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-         agent = GetComponent<NavMeshAgent>();
-        
+         agent = this.gameObject.GetComponent<NavMeshAgent>();
+         agent.avoidancePriority = Random.Range(0, 99); 
     }
 
     // Update is called once per frame
     void Update() {
 
-        agent.destination = exit.transform.position;
+        
+        
         
     }
 }
