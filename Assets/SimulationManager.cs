@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro.Examples;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 
 public class SimulationManager : MonoBehaviour {
@@ -18,7 +19,14 @@ public class SimulationManager : MonoBehaviour {
     [SerializeField]
     public int currentAgents;
     [SerializeField]
-    public TMP_Text currentAgentsDisplay;
+    public TMP_Text currentAgentsDisplay; 
+    [SerializeField]
+    Slider simulationSpeedSlider;
+    [SerializeField]
+    TMP_Text simulationSpeedText;
+    [SerializeField]
+    [Range(1, 15)]
+    public float timeScale = 1;
     void Start() {
 
     }
@@ -29,6 +37,7 @@ public class SimulationManager : MonoBehaviour {
         if(currentAgents <= 0) {
             simIsRunning = false;
         }
+        
     }
 
     public void SpawnAgents() {
@@ -41,7 +50,14 @@ public class SimulationManager : MonoBehaviour {
         simIsRunning = true;
         dataCollector.GetComponent<DataCollection>().beginDataCollection(); //Access AgentParamGen script and calls GenAgent funct
         CameraController mainCamController = GameObject.FindGameObjectWithTag("MainCamera").gameObject.GetComponent<CameraController>();
-        mainCamController.CameraTarget = GameObject.Find("Agent0").gameObject.transform;
+        mainCamController.CameraTarget = GameObject.Find("Agent1").gameObject.transform;
     }
+    public void setSimulationSpeed(float newSpeed)
+    {
 
+        timeScale =  newSpeed;
+        Time.timeScale = timeScale;
+        simulationSpeedText.text = "Simulation Speed: " + timeScale.ToString() + "x";
+
+    }
 }

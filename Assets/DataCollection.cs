@@ -7,6 +7,7 @@ using System.IO;
 using System;
 
 
+
 public class DataCollection : MonoBehaviour
 {
     [SerializeField]
@@ -14,8 +15,10 @@ public class DataCollection : MonoBehaviour
     private bool isDataCollecting;
     [SerializeField]
     private SimulationManager simulationManager;
-    DataTable data = new DataTable();
-    string filePath = Application.dataPath + "/Data/data.csv";
+    DataTable data = new DataTable(); 
+    string date;
+
+    string filePath;
 
     // Start is called before the first frame update
     private float timeT = 0;
@@ -24,6 +27,16 @@ public class DataCollection : MonoBehaviour
         data.Columns.Add("Time to Evacuate");
         data.Columns.Add("Age");
         data.Columns.Add("Gender");
+        data.Columns.Add("Disability");
+        data.Columns.Add("SpatialKnowledge");
+        data.Columns.Add("Observation of Environment");
+        data.Columns.Add("Initial Stress");
+        data.Columns.Add("Maximum Stress");
+        data.Columns.Add("Average Stress");
+        data.Columns.Add("Stress on Exit");
+
+        date = DateTime.Now.ToString("dd-MM-yyyy&HH-mm");
+        filePath = Application.dataPath + "/Data/data" + date + ".csv";
     }
 
     // Update is called once per frame
@@ -42,9 +55,12 @@ public class DataCollection : MonoBehaviour
     public void beginDataCollection() {
         isDataCollecting = true;
     }
-    public void addDataRow(float timeToEvacuate, float age ,AgentParameterGeneration.Gender gender) {
+    public void addDataRow(float timeToEvacuate, float age ,AgentParameterGeneration.Gender gender, 
+        String disability, AgentParameterGeneration.SpatialKnowledge spatialKnowledge, AgentParameterGeneration.EmergencyRecognition emergencyRecognition, 
+        float initialStress, float maxStress, float averageStress, float exitStress) {
 
-        data.Rows.Add(timeToEvacuate.ToString(), age.ToString(), gender.ToString() );
+        data.Rows.Add(timeToEvacuate.ToString(), age.ToString(), gender.ToString(), disability.ToString(), spatialKnowledge, emergencyRecognition
+            , initialStress, maxStress, averageStress, exitStress);
     }
 
     private void ExportDataTableToCSV(DataTable dataTable, string filePath) {
