@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class AgentData : MonoBehaviour {
 
@@ -24,15 +25,19 @@ public class AgentData : MonoBehaviour {
     public void OnTriggerEnter(Collider other) {
 
         if(other.tag.Equals("exit")) { //If the agent reaches an exit, collect their data.
-                                       
+            string disability;                   
             currentAgentParameter = this.gameObject.GetComponent<AgentParameters>();
-            dataCollection.addDataRow(currentAgentParameter.TimeToEvacuate, currentAgentParameter.Age, currentAgentParameter.Gender);
+            
+            if(currentAgentParameter.MovementPercentChange == 0) {
+                disability = "None";
+            } else {
+                disability = currentAgentParameter.MovementPercentChange.ToString();
+
+            }
+            dataCollection.addDataRow(currentAgentParameter.TimeToEvacuate, currentAgentParameter.Age, currentAgentParameter.Gender, disability, currentAgentParameter.SpatialKnowledge, currentAgentParameter.EmergencyRecognition, currentAgentParameter.InitialStress, 0, 0, currentAgentParameter.stressManager.Stress);
             simulationManager.currentAgents--;
             Destroy(this.gameObject);
         }
-
-      
-
     }
 
     

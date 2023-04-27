@@ -6,6 +6,10 @@ TagManager:
   tags:
   - exit
   - spawn
+  - spawnMedium
+  - spawnLarge
+  - spawnSmall
+  - spawnXL
   layers:
   - Default
   - TransparentFX

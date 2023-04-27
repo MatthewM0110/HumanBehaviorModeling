@@ -6,31 +6,35 @@ using UnityEngine.AI;
 public class AgentParameters : MonoBehaviour {
 
     private SimulationManager simulationManager;
-
+    public StressManager stressManager;
+    [Header("Peers")]
+    [SerializeField] public List<GameObject> peers = new List<GameObject>();
     [Header("Agent Parameters")]
-
+    [SerializeField] private int uniqueID;
     [SerializeField] private AgentParameterGeneration.Gender gender;
     [SerializeField] private AgentParameterGeneration.MovementPercentChange movementPercentChange;
     [SerializeField] private AgentParameterGeneration.SpatialKnowledge spatialKnowledge;
     [SerializeField] private AgentParameterGeneration.EmergencyRecognition emergencyRecognition;
     [SerializeField] private float speed;
-    [SerializeField] private float stress;
+    [SerializeField] private float initialStress;
+    
+    [SerializeField] private float stressThreshold;
     [SerializeField] private float nervousness;
     [SerializeField] private float age;
     [SerializeField] private float timeToEvacuate;
 
 
     private NavMeshAgent navMeshAgent;
-    private pathfinding pathfinding;
     private Material maleMaterial;
     private Material femaleMaterial;
 
+    public int UniqueID { get => uniqueID; set => uniqueID = value; }
     public AgentParameterGeneration.Gender Gender { get => gender; set => gender = value; }
     public AgentParameterGeneration.MovementPercentChange MovementPercentChange { get => movementPercentChange; set => movementPercentChange = value; }
     public AgentParameterGeneration.SpatialKnowledge SpatialKnowledge { get => spatialKnowledge; set => spatialKnowledge = value; }
     public AgentParameterGeneration.EmergencyRecognition EmergencyRecognition { get => emergencyRecognition; set => emergencyRecognition = value; }
     public float Speed { get => speed; set => speed = value; }
-    public float Stress { get => stress; set => stress = value; }
+    public float InitialStress { get => initialStress; set => initialStress = value; }
     public float Nervousness { get => nervousness; set => nervousness = value; }
     public float Age { get => age; set => age = value; }
     public float TimeToEvacuate { get => timeToEvacuate; set => timeToEvacuate = value; }
@@ -38,11 +42,10 @@ public class AgentParameters : MonoBehaviour {
     // Start is called before the first frame update
     void Start()
     {
+        stressManager = gameObject.GetComponent<StressManager>();
         simulationManager = GameObject.Find("SimulationManager").GetComponent<SimulationManager>(); 
         navMeshAgent = gameObject.GetComponent<NavMeshAgent>();
-        pathfinding = gameObject.GetComponent<pathfinding>();
-
-        pathfinding.exit = GameObject.FindGameObjectWithTag("exit");
+       
         navMeshAgent.speed = speed;
 
         maleMaterial = Resources.Load<Material>("Male");
@@ -56,6 +59,7 @@ public class AgentParameters : MonoBehaviour {
             GetComponent<Renderer>().material = femaleMaterial;
         }
 
+        stressManager.Stress = initialStress;
   
 
     }
@@ -66,9 +70,11 @@ public class AgentParameters : MonoBehaviour {
         if (simulationManager.simIsRunning) {
             TimeToEvacuate += Time.deltaTime;
         }
-        
+
 
     }
+
+    
 
 
 }
