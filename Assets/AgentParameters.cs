@@ -15,13 +15,16 @@ public class AgentParameters : MonoBehaviour {
     [SerializeField] private AgentParameterGeneration.MovementPercentChange movementPercentChange;
     [SerializeField] private AgentParameterGeneration.SpatialKnowledge spatialKnowledge;
     [SerializeField] private AgentParameterGeneration.EmergencyRecognition emergencyRecognition;
+    [SerializeField] private AgentParameterGeneration.Cooperation cooperation;
+    [SerializeField] private AgentParameterGeneration.EmergencyTraining emergencyTraining;
     [SerializeField] private float speed;
-    [SerializeField] private float initialStress;
+    [SerializeField] private float mobilityStress;
     
     [SerializeField] private float stressThreshold;
     [SerializeField] private float nervousness;
     [SerializeField] private float age;
     [SerializeField] private float timeToEvacuate;
+  
 
 
     private NavMeshAgent navMeshAgent;
@@ -33,11 +36,14 @@ public class AgentParameters : MonoBehaviour {
     public AgentParameterGeneration.MovementPercentChange MovementPercentChange { get => movementPercentChange; set => movementPercentChange = value; }
     public AgentParameterGeneration.SpatialKnowledge SpatialKnowledge { get => spatialKnowledge; set => spatialKnowledge = value; }
     public AgentParameterGeneration.EmergencyRecognition EmergencyRecognition { get => emergencyRecognition; set => emergencyRecognition = value; }
+    public AgentParameterGeneration.Cooperation Cooperation { get => cooperation; set => cooperation = value; }
+    public AgentParameterGeneration.EmergencyTraining EmergencyTraining { get => emergencyTraining; set => emergencyTraining = value; }
     public float Speed { get => speed; set => speed = value; }
-    public float InitialStress { get => initialStress; set => initialStress = value; }
+    public float MobilityStress { get => mobilityStress; set => mobilityStress = value; }
     public float Nervousness { get => nervousness; set => nervousness = value; }
     public float Age { get => age; set => age = value; }
     public float TimeToEvacuate { get => timeToEvacuate; set => timeToEvacuate = value; }
+    
 
     // Start is called before the first frame update
     void Start()
@@ -59,7 +65,7 @@ public class AgentParameters : MonoBehaviour {
             GetComponent<Renderer>().material = femaleMaterial;
         }
 
-        stressManager.Stress = initialStress;
+        stressManager.Stress = mobilityStress;
   
 
     }

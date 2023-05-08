@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 public class AgentPathingDeterminer : MonoBehaviour
 {
+
     private SimulationManager simulationManager;
     private bool isSpawned = false; //unique for each agent. True if Begin() has been called
     //Navigation 
@@ -102,7 +103,7 @@ public class AgentPathingDeterminer : MonoBehaviour
         // Print the closest exits and their distances for debugging purposes
         foreach (GameObject exit in closestExits)
         {
-            Debug.Log($"Exit: {exit.name}, Distance: {Vector3.Distance(this.gameObject.transform.position, exit.transform.position)}");
+            //Debug.Log($"Exit: {exit.name}, Distance: {Vector3.Distance(this.gameObject.transform.position, exit.transform.position)}");
         }
     }
 

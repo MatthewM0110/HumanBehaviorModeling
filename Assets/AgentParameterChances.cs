@@ -98,5 +98,19 @@ public class AgentParameterChances : MonoBehaviour
     [SerializeField]
     public TMP_InputField numberOfAgents;
 
+    [Header("Peers")]
+    [SerializeField]
+    Slider percentOfPeersSlider;
+    [Range(1, 100)]
+    public float percentOfPeers;
+    [SerializeField]
+    public TMP_Text percentOfPeersText;
 
+    public void setPercentOfPeers(float newPercent)
+    {
+        print("CHANGING POP TO " + newPercent);
+        percentOfPeers = newPercent;
+        percentOfPeersText.text = "Percent of Peers: " + percentOfPeers.ToString();
+
+    }
 }

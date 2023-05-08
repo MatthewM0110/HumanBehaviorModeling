@@ -5,7 +5,7 @@ using UnityEngine;
 public class PeerPresence : MonoBehaviour
 {
 
-    pub
+   
     // Start is called before the first frame update
     void Start()
     {

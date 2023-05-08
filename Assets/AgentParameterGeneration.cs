@@ -63,10 +63,20 @@ public class AgentParameterGeneration : MonoBehaviour
         Medium,
         High
     }
-
+    public enum EmergencyTraining 
+    {
+        Low,
+        Medium, 
+        High  
+    }
+    public enum Cooperation
+    {
+        Low, //1
+        Medium, //2
+        High //3
+    }
     private void Awake()
     {
-
         agentParameterChances = gameObject.GetComponent<AgentParameterChances>();
     }
     // Start is called before the first frame update
@@ -159,11 +169,22 @@ public class AgentParameterGeneration : MonoBehaviour
 
         foreach(GameObject agent in activeAgents)
         {
-            int numberOfPeers = UnityEngine.Random.Range(1,4);
+            //int numberOfPeers = UnityEngine.Random.Range(1,4);
+            AgentParameterChances agentParameterChances = FindObjectOfType<AgentParameterChances>();
+            if(agentParameterChances == null)
+            {
+                print("AGENT PARAM IS NULL");
+            }
+            int numberOfPeers = (int)(activeAgents.Count * FindObjectOfType<AgentParameterChances>().percentOfPeers/100f);
+          
+            print("Agent Pop" + agentPop + " " + activeAgents.Count);
+            print("PercentOfPeers" + numberOfPeers);
             for (int i = 0;i < numberOfPeers;i++)
             {
                 GameObject randomAgent = activeAgents[UnityEngine.Random.Range(0, (int)activeAgents.Count)];
-                if(randomAgent != agent)
+                AgentParameters agentParam = agent.GetComponent<AgentParameters>();
+
+                if (randomAgent != agent && !agentParam.peers.Contains(randomAgent))
                 {
                     agent.GetComponent<AgentParameters>().peers.Add(randomAgent);
 
@@ -171,6 +192,7 @@ public class AgentParameterGeneration : MonoBehaviour
             }
             
         }
+        
         simulationManager.currentAgents = agentSpawned;
         simulationManager.isAgentsSpawned = true;
 
@@ -196,7 +218,8 @@ public class AgentParameterGeneration : MonoBehaviour
         agent.transform.name = "Agent" + agentSpawned;
         agentParam.UniqueID = agentSpawned;
         agent.transform.rotation = new Quaternion(90f, -0.5f, 0.25f, 0);
-        agentParam.InitialStress = calcInitialStress(agentParam.Speed);
+        agentParam.MobilityStress = calcInitialStress(agentParam.Speed);
+        agentParam.EmergencyTraining = calcEmergencyTraining();
         stressManager.DetermineStressLevel();
         activeAgents.Add(agent);
     }
@@ -292,7 +315,24 @@ public class AgentParameterGeneration : MonoBehaviour
 
         return EmergencyRecognition.Lagging;
     }
+    private EmergencyTraining calcEmergencyTraining()
+    {
 
+        //75% are low, 15% are med, and 10% high
+        float generateRandomFloat = UnityEngine.Random.Range(1, 99);
+
+        if (generateRandomFloat < 75)
+        {
+            return EmergencyTraining.Low;
+        }else if(generateRandomFloat < 90)
+        {
+            return EmergencyTraining.Medium;
+
+        }
+
+         return EmergencyTraining.High;
+
+    }
     private SpatialKnowledge calcSpatialKnowledge()
     {
         //30 % high, 30% medium, 40% low

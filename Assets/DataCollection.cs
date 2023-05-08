@@ -34,6 +34,7 @@ public class DataCollection : MonoBehaviour
         data.Columns.Add("Maximum Stress");
         data.Columns.Add("Average Stress");
         data.Columns.Add("Stress on Exit");
+        data.Columns.Add("Number of Peers");
 
         date = DateTime.Now.ToString("dd-MM-yyyy&HH-mm");
         filePath = Application.dataPath + "/Data/data" + date + ".csv";
@@ -57,13 +58,14 @@ public class DataCollection : MonoBehaviour
     }
     public void addDataRow(float timeToEvacuate, float age ,AgentParameterGeneration.Gender gender, 
         String disability, AgentParameterGeneration.SpatialKnowledge spatialKnowledge, AgentParameterGeneration.EmergencyRecognition emergencyRecognition, 
-        float initialStress, float maxStress, float averageStress, float exitStress) {
+        float initialStress, float maxStress, float averageStress, float exitStress, int numberOfPeers) {
 
         data.Rows.Add(timeToEvacuate.ToString(), age.ToString(), gender.ToString(), disability.ToString(), spatialKnowledge, emergencyRecognition
-            , initialStress, maxStress, averageStress, exitStress);
+            , initialStress, maxStress, averageStress, exitStress, numberOfPeers);
     }
 
     private void ExportDataTableToCSV(DataTable dataTable, string filePath) {
+        print("Saving data...");
         // Create the CSV file
         StreamWriter sw = new StreamWriter(filePath, false);
 
@@ -96,6 +98,7 @@ public class DataCollection : MonoBehaviour
 
         // Close the file
         sw.Close();
+        print("Data Saved!!");
     }
 
 }
