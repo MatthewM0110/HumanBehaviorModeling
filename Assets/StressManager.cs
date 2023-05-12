@@ -6,7 +6,18 @@ using UnityEngine.Scripting;
 
 public class StressManager : MonoBehaviour
 {
+
+
+
+    [SerializeField] private float stressFromPeerPresence;
+    [SerializeField] private float stressFromTraining;
+    [SerializeField] private float stressFromCooperation;
+    [SerializeField] private float stressFromMovement;
+    [SerializeField] private float stressFromPersonality;
+
+
     private AgentParameters agentParameters;
+    private PeerPresenceManager peerPresenceManager;
 
     [SerializeField] private float currentStress;
     [SerializeField] private float maxStress;
@@ -25,6 +36,7 @@ public class StressManager : MonoBehaviour
     void Start()
     {   
         agentParameters = gameObject.GetComponent<AgentParameters>();
+        peerPresenceManager = gameObject.GetComponent<PeerPresenceManager>();
         sphereCollider = gameObject.GetComponent<SphereCollider>();
         maxStress = 0;
         averageStress = 0;
@@ -35,14 +47,7 @@ public class StressManager : MonoBehaviour
 
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (agentParameters.peers.Contains(collision.gameObject))
-        {
-            print("Collided with a peer!");
-        }
-    }
-
+    
     void Update()
     {
 
@@ -112,21 +117,26 @@ public class StressManager : MonoBehaviour
     private float calculateCurrentStress()
     {
 
-        //HOW DO WE QUANTIFY STRESS FROM THESE FACTORS?
+        //how do we quantify stress from these factors?
         SimulationManager sim = FindObjectOfType<SimulationManager>();
-        float stressFromMobility = agentParameters.MobilityStress;
-        float stressFromPeerPresence = 1;
-        float stressFromTraining = 1;
-        float stressFromCooperation = 1;
-        float stressFromMovement = 1;
+        // float stressFromMobility = agentParameters.MobilityStress;
+        stressFromPeerPresence = peerPresenceManager.peerPresenceLevel;
+        stressFromTraining = agentParameters.getTrainingStressLevel();
+        stressFromCooperation = 1;
+        //stressFromMovement =  agentParameters.;
+        stressFromPersonality = 1;
 
-        float currentStress =
-            stressFromMobility * sim.mobilityWeight +
-            stressFromPeerPresence * sim.peerPresenceWeight +
-            stressFromTraining * sim.trainingWeight +
-            stressFromCooperation * sim.cooperationWeight +
-            stressFromMovement * sim.movementWeight;
+        float calculatedStress =
+           //  stressFromMobility * sim.mobilityWeight +
+           stressFromPeerPresence * ((float)sim.peerPresenceWeight / 100) +
+           stressFromTraining * ((float)sim.trainingWeight / 100) //+
+                                                           // stressFromCooperation * (sim.cooperationWeight / 100)
 
-        return currentStress;
+          ;
+        print("CUrrent stress of _" + calculatedStress);
+
+        return calculatedStress;
     }
+
+
 }
