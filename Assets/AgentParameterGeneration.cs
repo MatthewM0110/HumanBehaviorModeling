@@ -57,23 +57,30 @@ public class AgentParameterGeneration : MonoBehaviour
         Lagging
     }
 
-    public enum StressLevel
+    public enum StressLevel // will affect decision making
     {
-        Low,
+        Low = 1,
         Medium,
         High
     }
     public enum EmergencyTraining 
     {
-        Low,
+        Low = 1,
         Medium, 
         High  
     }
     public enum Cooperation
     {
-        Low, //1
+        Low = 1, //1
         Medium, //2
         High //3
+    }
+
+    public enum PeerPresence
+    {
+        Low = 1,    
+        Medium,
+        High
     }
     private void Awake()
     {
@@ -202,6 +209,7 @@ public class AgentParameterGeneration : MonoBehaviour
     {
         AgentParameters agentParam = agent.AddComponent<AgentParameters>();
         StressManager stressManager = agent.AddComponent<StressManager>();
+        PeerPresenceManager peerPresenceManager = agent.AddComponent<PeerPresenceManager>();
         Gender gender = calcGender();
         int age = calcAge();
         //Gender gender = Gender.Male;
@@ -222,12 +230,11 @@ public class AgentParameterGeneration : MonoBehaviour
         agentParam.EmergencyTraining = calcEmergencyTraining();
         stressManager.DetermineStressLevel();
         activeAgents.Add(agent);
-    }
-
-    private void generatePeers()
-    {
+       
 
     }
+
+
     private float calcInitialStress(float speed)
     {
 

@@ -80,6 +80,22 @@ public class AgentParameters : MonoBehaviour {
 
     }
 
+    public int getTrainingStressLevel()
+    {
+        if(this.emergencyTraining == AgentParameterGeneration.EmergencyTraining.Low)
+        {
+            return 1;
+        }
+        if (emergencyTraining == AgentParameterGeneration.EmergencyTraining.Medium)
+        {
+            return 2;
+        }
+        else
+        {
+            return 3;
+        }
+
+    }
     
 
 
