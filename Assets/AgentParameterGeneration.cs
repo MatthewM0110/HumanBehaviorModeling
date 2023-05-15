@@ -82,6 +82,14 @@ public class AgentParameterGeneration : MonoBehaviour
         Medium,
         High
     }
+
+    public enum Movement
+    {
+        Low, 
+        Medium, 
+        High
+    }
+ 
     private void Awake()
     {
         agentParameterChances = gameObject.GetComponent<AgentParameterChances>();
@@ -208,7 +216,7 @@ public class AgentParameterGeneration : MonoBehaviour
     private void createAgent(GameObject agent)
     {
         AgentParameters agentParam = agent.AddComponent<AgentParameters>();
-        StressManager stressManager = agent.AddComponent<StressManager>();
+       // StressManager stressManager = agent.AddComponent<StressManager>();
         PeerPresenceManager peerPresenceManager = agent.AddComponent<PeerPresenceManager>();
         Gender gender = calcGender();
         int age = calcAge();
@@ -228,7 +236,7 @@ public class AgentParameterGeneration : MonoBehaviour
         agent.transform.rotation = new Quaternion(90f, -0.5f, 0.25f, 0);
         agentParam.MobilityStress = calcInitialStress(agentParam.Speed);
         agentParam.EmergencyTraining = calcEmergencyTraining();
-        stressManager.DetermineStressLevel();
+        ///stressManager.DetermineStressLevel();
         activeAgents.Add(agent);
        
 

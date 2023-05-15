@@ -34,8 +34,10 @@ public class AgentPathingDeterminer : MonoBehaviour
         //navMeshAgentComponent.avoidancePriority = Random.Range(0, 99);
         //navMeshAgentComponent.avoidancePriority = 100 - (int)agentParameters.Age ;
         navMeshAgentComponent.avoidancePriority = (int)agentParameters.Speed;
-
-
+        //Agent stress initializer
+        agentParameters.stressManager = this.gameObject.AddComponent<StressManager>();
+        agentParameters.stressManager.DetermineStressLevel();
+        agentParameters.stressManager.Begin();
         if (agentParameters.EmergencyRecognition == AgentParameterGeneration.EmergencyRecognition.Lagging) {
             print("I have lagging emergency Recognition");
             StartCoroutine(LaggingEvacuation());
