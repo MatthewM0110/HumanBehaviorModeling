@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Scripting;
 
 public class StressManager : MonoBehaviour
@@ -12,8 +13,15 @@ public class StressManager : MonoBehaviour
     [SerializeField] private float stressFromPeerPresence;
     [SerializeField] private float stressFromTraining;
     [SerializeField] private float stressFromCooperation;
-    [SerializeField] private float stressFromMovement;
+    [SerializeField] private float stressFromDisability;
     [SerializeField] private float stressFromPersonality;
+    [SerializeField] private float stressFromMovement;
+
+    private int mobilityWeight;
+    private int trainingWeight;
+    private int cooperationWeight;
+    private int movementWeight;
+    private int peerPresenceWeight;
 
 
     private AgentParameters agentParameters;
@@ -25,7 +33,11 @@ public class StressManager : MonoBehaviour
     [SerializeField] private int stressUpdateCount;
     [SerializeField] private SphereCollider sphereCollider;
     [SerializeField] private float distanceMoved;
-    
+
+    private float totalDistanceMoved = 0f;
+    private int numUpdates = 0;
+    [SerializeField] private float averageDistanceMoved = 0f;
+
     [SerializeField] private AgentParameterGeneration.StressLevel stressLevel;
     private Vector3 position;
     public float Stress { get => currentStress; set => currentStress = value; }
@@ -34,23 +46,40 @@ public class StressManager : MonoBehaviour
     public AgentParameterGeneration.StressLevel StressLevel { get => stressLevel; set => stressLevel = value; }
 
     void Start()
-    {   
+    {
         agentParameters = gameObject.GetComponent<AgentParameters>();
         peerPresenceManager = gameObject.GetComponent<PeerPresenceManager>();
         sphereCollider = gameObject.GetComponent<SphereCollider>();
+
+    }
+    public void Begin()
+    {
+        SimulationManager sim = FindObjectOfType<SimulationManager>();
+
+        //Get simulation weights
+        mobilityWeight = sim.mobilityWeight;
+        trainingWeight = sim.trainingWeight;
+        cooperationWeight = sim.cooperationWeight;
+        movementWeight = sim.movementWeight;
+        peerPresenceWeight = sim.peerPresenceWeight;
+
+
+
         maxStress = 0;
         averageStress = 0;
         stressUpdateCount = 0;
         position = new Vector3(0, 0, 0);
         InvokeRepeating("UpdateStress", 0, 1f);
         InvokeRepeating("GetDistanceMoved", 0, 3f);
+        numUpdates = 0;
+        totalDistanceMoved = 0;
+        position = this.gameObject.transform.position;
 
     }
 
-    
     void Update()
     {
-
+         
     }
     
     public void DetermineStressLevel()
@@ -86,14 +115,19 @@ public class StressManager : MonoBehaviour
 
         //Here we can get the values and weights to quantify stress per agent. This is calculated every second. 
         //Mobility, Peer presence (reduces stress), Training, Cooperation, Movement 
+
+        //Stress level from evacuation movement
+
+
+
         currentStress = calculateCurrentStress();
-
-
 
         if (currentStress > maxStress)
         {
             maxStress = currentStress;
         }
+
+
 
         // Update averageStress
         stressUpdateCount++;
@@ -111,32 +145,70 @@ public class StressManager : MonoBehaviour
         distanceMoved = distance;
         position = this.gameObject.transform.position;
 
-        
-    }
+        // Update the total distance moved and the number of updates
+        totalDistanceMoved += distanceMoved;
+        numUpdates++;
 
+        // Update the average
+        UpdateAverageDistance();
+    }
+    private void UpdateAverageDistance()
+    {
+        // Calculate the average
+        averageDistanceMoved = totalDistanceMoved / numUpdates;
+    }
     private float calculateCurrentStress()
     {
 
         //how do we quantify stress from these factors?
-        SimulationManager sim = FindObjectOfType<SimulationManager>();
         // float stressFromMobility = agentParameters.MobilityStress;
         stressFromPeerPresence = peerPresenceManager.peerPresenceLevel;
         stressFromTraining = agentParameters.getTrainingStressLevel();
         stressFromCooperation = 1;
-        //stressFromMovement =  agentParameters.;
+        stressFromMovement = calculateStressFromMovement();
         stressFromPersonality = 1;
-
+        //StressFromDisability??? or Mobility
         float calculatedStress =
            //  stressFromMobility * sim.mobilityWeight +
-           stressFromPeerPresence * ((float)sim.peerPresenceWeight / 100) +
-           stressFromTraining * ((float)sim.trainingWeight / 100) //+
-                                                           // stressFromCooperation * (sim.cooperationWeight / 100)
-
+           stressFromPeerPresence * (intToFraction(peerPresenceWeight)) +
+           stressFromTraining * (intToFraction(trainingWeight)) +
+           stressFromMovement * (intToFraction(movementWeight))                              
+        
           ;
-        print("CUrrent stress of _" + calculatedStress);
+        print("Current stress of _" + calculatedStress);
 
         return calculatedStress;
     }
 
+    private float calculateStressFromMovement()
+    {
+        if(averageDistanceMoved == 0)
+        {
+            return 1;
+        }
+        float ratio = distanceMoved / averageDistanceMoved;
+        float stressLevel;
+        
+        // Check which range the ratio falls into and assign the corresponding stress level
+        if (ratio >= 0 && ratio < 0.50)
+        {
+            stressLevel = 3;
+        }
+        else if (ratio >= 0.50 && ratio < 0.75)
+        {
+            stressLevel = 2;
+        }
+        else
+        {
+            stressLevel = 1;
+        }
+
+        return stressLevel;
+    }
+
+    private float intToFraction(int i)
+    {
+        return (float)i/100;
+    }
 
 }

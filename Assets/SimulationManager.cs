@@ -40,6 +40,8 @@ public class SimulationManager : MonoBehaviour {
     [Range(0, 100)] public int movementWeight = 20; //ie Time spend without moving
     [SerializeField]
     [Range(0, 100)] public int peerPresenceWeight = 20;
+
+    //Disability weight?
     void Start() {
 
     }
