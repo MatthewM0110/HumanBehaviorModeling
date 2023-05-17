@@ -17,6 +17,11 @@ public class StressManager : MonoBehaviour
     [SerializeField] private float stressFromPersonality;
     [SerializeField] private float stressFromMovement;
 
+    private int mobilityWeight;
+    private int trainingWeight;
+    private int cooperationWeight;
+    private int movementWeight;
+    private int peerPresenceWeight;
 
 
     private AgentParameters agentParameters;
@@ -49,7 +54,17 @@ public class StressManager : MonoBehaviour
     }
     public void Begin()
     {
-        
+        SimulationManager sim = FindObjectOfType<SimulationManager>();
+
+        //Get simulation weights
+        mobilityWeight = sim.mobilityWeight;
+        trainingWeight = sim.trainingWeight;
+        cooperationWeight = sim.cooperationWeight;
+        movementWeight = sim.movementWeight;
+        peerPresenceWeight = sim.peerPresenceWeight;
+
+
+
         maxStress = 0;
         averageStress = 0;
         stressUpdateCount = 0;
@@ -146,22 +161,21 @@ public class StressManager : MonoBehaviour
     {
 
         //how do we quantify stress from these factors?
-        SimulationManager sim = FindObjectOfType<SimulationManager>();
         // float stressFromMobility = agentParameters.MobilityStress;
         stressFromPeerPresence = peerPresenceManager.peerPresenceLevel;
         stressFromTraining = agentParameters.getTrainingStressLevel();
         stressFromCooperation = 1;
         stressFromMovement = calculateStressFromMovement();
         stressFromPersonality = 1;
-
+        //StressFromDisability??? or Mobility
         float calculatedStress =
            //  stressFromMobility * sim.mobilityWeight +
-           stressFromPeerPresence * ((float)sim.peerPresenceWeight / 100) +
-           stressFromTraining * ((float)sim.trainingWeight / 100) //+
-                                                           // stressFromCooperation * (sim.cooperationWeight / 100)
-
+           stressFromPeerPresence * (intToFraction(peerPresenceWeight)) +
+           stressFromTraining * (intToFraction(trainingWeight)) +
+           stressFromMovement * (intToFraction(movementWeight))                              
+        
           ;
-        print("CUrrent stress of _" + calculatedStress);
+        print("Current stress of _" + calculatedStress);
 
         return calculatedStress;
     }
@@ -192,5 +206,9 @@ public class StressManager : MonoBehaviour
         return stressLevel;
     }
 
+    private float intToFraction(int i)
+    {
+        return (float)i/100;
+    }
 
 }

@@ -34,7 +34,7 @@ public class AgentData : MonoBehaviour {
                 disability = currentAgentParameter.MovementPercentChange.ToString();
 
             }
-            dataCollection.addDataRow(currentAgentParameter.TimeToEvacuate, currentAgentParameter.Age, currentAgentParameter.Gender, disability, currentAgentParameter.SpatialKnowledge, currentAgentParameter.EmergencyRecognition, currentAgentParameter.MobilityStress, 0, 0, currentAgentParameter.stressManager.Stress, currentAgentParameter.peers.Count);
+            dataCollection.addDataRow(currentAgentParameter.TimeToEvacuate, currentAgentParameter.Age, currentAgentParameter.Gender, disability, currentAgentParameter.SpatialKnowledge, currentAgentParameter.EmergencyRecognition, currentAgentParameter.EmergencyTraining, currentAgentParameter.MobilityStress, currentAgentParameter.stressManager.MaxStress, currentAgentParameter.stressManager.AverageStress, currentAgentParameter.stressManager.Stress, currentAgentParameter.peers.Count);
             simulationManager.currentAgents--;
             Destroy(this.gameObject);
         }

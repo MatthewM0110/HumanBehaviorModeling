@@ -30,6 +30,7 @@ public class DataCollection : MonoBehaviour
         data.Columns.Add("Disability");
         data.Columns.Add("SpatialKnowledge");
         data.Columns.Add("Observation of Environment");
+        data.Columns.Add("Emergency Training");
         data.Columns.Add("Initial Stress");
         data.Columns.Add("Maximum Stress");
         data.Columns.Add("Average Stress");
@@ -58,9 +59,10 @@ public class DataCollection : MonoBehaviour
     }
     public void addDataRow(float timeToEvacuate, float age ,AgentParameterGeneration.Gender gender, 
         String disability, AgentParameterGeneration.SpatialKnowledge spatialKnowledge, AgentParameterGeneration.EmergencyRecognition emergencyRecognition, 
+        AgentParameterGeneration.EmergencyTraining emergencyTraining,
         float initialStress, float maxStress, float averageStress, float exitStress, int numberOfPeers) {
 
-        data.Rows.Add(timeToEvacuate.ToString(), age.ToString(), gender.ToString(), disability.ToString(), spatialKnowledge, emergencyRecognition
+        data.Rows.Add(timeToEvacuate.ToString(), age.ToString(), gender.ToString(), disability.ToString(), spatialKnowledge, emergencyRecognition, emergencyTraining
             , initialStress, maxStress, averageStress, exitStress, numberOfPeers);
     }
 
