@@ -23,6 +23,7 @@ public class StressManager : MonoBehaviour
     private int movementWeight;
     private int peerPresenceWeight;
 
+    private float agentSpeed;
 
     private AgentParameters agentParameters;
     private PeerPresenceManager peerPresenceManager;
@@ -50,6 +51,7 @@ public class StressManager : MonoBehaviour
         agentParameters = gameObject.GetComponent<AgentParameters>();
         peerPresenceManager = gameObject.GetComponent<PeerPresenceManager>();
         sphereCollider = gameObject.GetComponent<SphereCollider>();
+        agentSpeed = agentParameters.Speed;
 
     }
     public void Begin()
@@ -62,7 +64,6 @@ public class StressManager : MonoBehaviour
         cooperationWeight = sim.cooperationWeight;
         movementWeight = sim.movementWeight;
         peerPresenceWeight = sim.peerPresenceWeight;
-
 
 
         maxStress = 0;
@@ -135,6 +136,7 @@ public class StressManager : MonoBehaviour
 
         // Update stress level
         DetermineStressLevel();
+        stressFromMovement = calculateStressFromMovement();
     }
 
     private void GetDistanceMoved()
@@ -150,13 +152,9 @@ public class StressManager : MonoBehaviour
         numUpdates++;
 
         // Update the average
-        UpdateAverageDistance();
+    
     }
-    private void UpdateAverageDistance()
-    {
-        // Calculate the average
-        averageDistanceMoved = totalDistanceMoved / numUpdates;
-    }
+   
     private float calculateCurrentStress()
     {
 
@@ -182,11 +180,8 @@ public class StressManager : MonoBehaviour
 
     private float calculateStressFromMovement()
     {
-        if(averageDistanceMoved == 0)
-        {
-            return 1;
-        }
-        float ratio = distanceMoved / averageDistanceMoved;
+        
+        float ratio = distanceMoved / agentSpeed;
         float stressLevel;
         
         // Check which range the ratio falls into and assign the corresponding stress level
