@@ -27,6 +27,7 @@ public class StressManager : MonoBehaviour
 
     private AgentParameters agentParameters;
     private PeerPresenceManager peerPresenceManager;
+    private CooperationManager cooperationManager;
 
     [SerializeField] private float currentStress;
     [SerializeField] private float maxStress;
@@ -50,6 +51,8 @@ public class StressManager : MonoBehaviour
     {
         agentParameters = gameObject.GetComponent<AgentParameters>();
         peerPresenceManager = gameObject.GetComponent<PeerPresenceManager>();
+        cooperationManager = gameObject.GetComponent<CooperationManager>();
+
         sphereCollider = gameObject.GetComponent<SphereCollider>();
         agentSpeed = agentParameters.Speed;
 
@@ -59,7 +62,7 @@ public class StressManager : MonoBehaviour
         SimulationManager sim = FindObjectOfType<SimulationManager>();
 
         //Get simulation weights
-        mobilityWeight = sim.mobilityWeight;
+        //mobilityWeight = sim.mobilityWeight;
         trainingWeight = sim.trainingWeight;
         cooperationWeight = sim.cooperationWeight;
         movementWeight = sim.movementWeight;
@@ -162,7 +165,7 @@ public class StressManager : MonoBehaviour
         // float stressFromMobility = agentParameters.MobilityStress;
         stressFromPeerPresence = peerPresenceManager.peerPresenceLevel;
         stressFromTraining = agentParameters.getTrainingStressLevel();
-        stressFromCooperation = 1;
+        stressFromCooperation = cooperationManager.getCooperationStress();
         stressFromMovement = calculateStressFromMovement();
         stressFromPersonality = 1;
         //StressFromDisability??? or Mobility
@@ -170,9 +173,8 @@ public class StressManager : MonoBehaviour
            //  stressFromMobility * sim.mobilityWeight +
            stressFromPeerPresence * (intToFraction(peerPresenceWeight)) +
            stressFromTraining * (intToFraction(trainingWeight)) +
-           stressFromMovement * (intToFraction(movementWeight))                              
-        
-          ;
+           stressFromMovement * (intToFraction(movementWeight)) +   
+           stressFromCooperation * (intToFraction(cooperationWeight));
         print("Current stress of _" + calculatedStress);
 
         return calculatedStress;
@@ -181,7 +183,7 @@ public class StressManager : MonoBehaviour
     private float calculateStressFromMovement()
     {
         
-        float ratio = distanceMoved / agentSpeed;
+        float ratio = distanceMoved / (agentSpeed * 3);
         float stressLevel;
         
         // Check which range the ratio falls into and assign the corresponding stress level

@@ -30,8 +30,8 @@ public class SimulationManager : MonoBehaviour {
 
 
     [Header("Stress Weights")]
-    [SerializeField]
-    [Range(0, 100)] public int mobilityWeight = 20;
+   // [SerializeField]
+   // [Range(0, 100)] public int mobilityWeight = 20;
     [SerializeField]
     [Range(0, 100)] public int trainingWeight = 20;
     [SerializeField]
@@ -52,9 +52,10 @@ public class SimulationManager : MonoBehaviour {
 
     private void NormalizeWeights()
     {
-        int totalWeight = mobilityWeight + trainingWeight + cooperationWeight + movementWeight + peerPresenceWeight;
+      //  int totalWeight = mobilityWeight + trainingWeight + cooperationWeight + movementWeight + peerPresenceWeight;
+        int totalWeight =  trainingWeight + cooperationWeight + movementWeight + peerPresenceWeight;
 
-        mobilityWeight = 100 * mobilityWeight / totalWeight;
+        //mobilityWeight = 100 * mobilityWeight / totalWeight;
         trainingWeight = 100 * trainingWeight / totalWeight;
         cooperationWeight = 100 * cooperationWeight / totalWeight;
         movementWeight = 100 * movementWeight / totalWeight;

@@ -71,9 +71,9 @@ public class AgentParameterGeneration : MonoBehaviour
     }
     public enum Cooperation
     {
-        Low = 1, //1
+        Low = 1, //1  No cooperation, high stress
         Medium, //2
-        High //3
+        High //3 high cooperation, low stress
     }
 
     public enum PeerPresence
@@ -218,6 +218,7 @@ public class AgentParameterGeneration : MonoBehaviour
         AgentParameters agentParam = agent.AddComponent<AgentParameters>();
        // StressManager stressManager = agent.AddComponent<StressManager>();
         PeerPresenceManager peerPresenceManager = agent.AddComponent<PeerPresenceManager>();
+        CooperationManager cooperationManager = agent.AddComponent<CooperationManager>();
         Gender gender = calcGender();
         int age = calcAge();
         //Gender gender = Gender.Male;
@@ -236,6 +237,7 @@ public class AgentParameterGeneration : MonoBehaviour
         agent.transform.rotation = new Quaternion(90f, -0.5f, 0.25f, 0);
         agentParam.MobilityStress = calcInitialStress(agentParam.Speed);
         agentParam.EmergencyTraining = calcEmergencyTraining();
+        agentParam.Cooperation = CalcCooperation();
         ///stressManager.DetermineStressLevel();
         activeAgents.Add(agent);
        
@@ -273,6 +275,16 @@ public class AgentParameterGeneration : MonoBehaviour
             speed = speed - (speed * ((float)movementPercentChange / 100));
         }
         return speed;
+    }
+    public Cooperation CalcCooperation()
+    {
+        // Generate a random number between 1 and 3
+        int randomNum = UnityEngine.Random.Range(1, 4);
+
+        // Convert the random number to a Cooperation value
+        Cooperation cooperation = (Cooperation)randomNum;
+
+        return cooperation;
     }
 
     private Gender calcGender()
