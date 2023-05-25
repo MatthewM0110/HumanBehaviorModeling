@@ -74,6 +74,7 @@ public class StressManager : MonoBehaviour
         stressUpdateCount = 0;
         position = new Vector3(0, 0, 0);
         InvokeRepeating("UpdateStress", 0, 1f);
+        InvokeRepeating("DetermineStressLevel", 0f, 1f);
         InvokeRepeating("GetDistanceMoved", 0, 3f);
         numUpdates = 0;
         totalDistanceMoved = 0;
@@ -88,15 +89,15 @@ public class StressManager : MonoBehaviour
     
     public void DetermineStressLevel()
     {
-        if (currentStress <= 0.85)
+        if (Stress <= 2.25)
         {
             StressLevel = AgentParameterGeneration.StressLevel.Low;
         }
-        else if (currentStress > 0.85 && currentStress <= 1.5)
+        else if (Stress > 2.25 && Stress <= 2.6)
         {
             StressLevel = AgentParameterGeneration.StressLevel.Medium;
         }
-        else if (currentStress > 1.5)
+        else if (Stress <= 3)
         {
             StressLevel = AgentParameterGeneration.StressLevel.High;
         }
@@ -123,7 +124,7 @@ public class StressManager : MonoBehaviour
         //Stress level from evacuation movement
 
 
-
+        stressFromMovement = calculateStressFromMovement();
         currentStress = calculateCurrentStress();
 
         if (currentStress > maxStress)
@@ -138,8 +139,8 @@ public class StressManager : MonoBehaviour
         averageStress = ((averageStress * (stressUpdateCount - 1)) + currentStress) / stressUpdateCount;
 
         // Update stress level
+        Stress = currentStress;
         DetermineStressLevel();
-        stressFromMovement = calculateStressFromMovement();
     }
 
     private void GetDistanceMoved()
