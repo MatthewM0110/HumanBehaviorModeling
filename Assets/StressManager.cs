@@ -27,6 +27,7 @@ public class StressManager : MonoBehaviour
 
     private AgentParameters agentParameters;
     private PeerPresenceManager peerPresenceManager;
+    private CooperationManager cooperationManager;
 
     [SerializeField] private float currentStress;
     [SerializeField] private float maxStress;
@@ -50,6 +51,8 @@ public class StressManager : MonoBehaviour
     {
         agentParameters = gameObject.GetComponent<AgentParameters>();
         peerPresenceManager = gameObject.GetComponent<PeerPresenceManager>();
+        cooperationManager = gameObject.GetComponent<CooperationManager>();
+
         sphereCollider = gameObject.GetComponent<SphereCollider>();
         agentSpeed = agentParameters.Speed;
 
@@ -59,7 +62,7 @@ public class StressManager : MonoBehaviour
         SimulationManager sim = FindObjectOfType<SimulationManager>();
 
         //Get simulation weights
-        mobilityWeight = sim.mobilityWeight;
+        //mobilityWeight = sim.mobilityWeight;
         trainingWeight = sim.trainingWeight;
         cooperationWeight = sim.cooperationWeight;
         movementWeight = sim.movementWeight;
@@ -71,6 +74,7 @@ public class StressManager : MonoBehaviour
         stressUpdateCount = 0;
         position = new Vector3(0, 0, 0);
         InvokeRepeating("UpdateStress", 0, 1f);
+        InvokeRepeating("DetermineStressLevel", 0f, 1f);
         InvokeRepeating("GetDistanceMoved", 0, 3f);
         numUpdates = 0;
         totalDistanceMoved = 0;
@@ -85,15 +89,15 @@ public class StressManager : MonoBehaviour
     
     public void DetermineStressLevel()
     {
-        if (currentStress <= 0.85)
+        if (Stress <= 2.25)
         {
             StressLevel = AgentParameterGeneration.StressLevel.Low;
         }
-        else if (currentStress > 0.85 && currentStress <= 1.5)
+        else if (Stress > 2.25 && Stress <= 2.6)
         {
             StressLevel = AgentParameterGeneration.StressLevel.Medium;
         }
-        else if (currentStress > 1.5)
+        else if (Stress <= 3)
         {
             StressLevel = AgentParameterGeneration.StressLevel.High;
         }
@@ -120,7 +124,7 @@ public class StressManager : MonoBehaviour
         //Stress level from evacuation movement
 
 
-
+        stressFromMovement = calculateStressFromMovement();
         currentStress = calculateCurrentStress();
 
         if (currentStress > maxStress)
@@ -135,8 +139,8 @@ public class StressManager : MonoBehaviour
         averageStress = ((averageStress * (stressUpdateCount - 1)) + currentStress) / stressUpdateCount;
 
         // Update stress level
+        Stress = currentStress;
         DetermineStressLevel();
-        stressFromMovement = calculateStressFromMovement();
     }
 
     private void GetDistanceMoved()
@@ -162,7 +166,7 @@ public class StressManager : MonoBehaviour
         // float stressFromMobility = agentParameters.MobilityStress;
         stressFromPeerPresence = peerPresenceManager.peerPresenceLevel;
         stressFromTraining = agentParameters.getTrainingStressLevel();
-        stressFromCooperation = 1;
+        stressFromCooperation = cooperationManager.getCooperationStress();
         stressFromMovement = calculateStressFromMovement();
         stressFromPersonality = 1;
         //StressFromDisability??? or Mobility
@@ -170,9 +174,8 @@ public class StressManager : MonoBehaviour
            //  stressFromMobility * sim.mobilityWeight +
            stressFromPeerPresence * (intToFraction(peerPresenceWeight)) +
            stressFromTraining * (intToFraction(trainingWeight)) +
-           stressFromMovement * (intToFraction(movementWeight))                              
-        
-          ;
+           stressFromMovement * (intToFraction(movementWeight)) +   
+           stressFromCooperation * (intToFraction(cooperationWeight));
         print("Current stress of _" + calculatedStress);
 
         return calculatedStress;
@@ -181,7 +184,7 @@ public class StressManager : MonoBehaviour
     private float calculateStressFromMovement()
     {
         
-        float ratio = distanceMoved / agentSpeed;
+        float ratio = distanceMoved / (agentSpeed * 3);
         float stressLevel;
         
         // Check which range the ratio falls into and assign the corresponding stress level

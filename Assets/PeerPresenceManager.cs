@@ -22,10 +22,6 @@ public class PeerPresenceManager : MonoBehaviour
     [SerializeField]
     public float peerPresenceLevel;
 
-    // Store a list of game objects currently inside the sphere
-    [SerializeField]
-    private List<GameObject> objectsInside = new List<GameObject>();
-
     private void Start()
     {
         agentParam = this.gameObject.GetComponent<AgentParameters>();
@@ -33,48 +29,35 @@ public class PeerPresenceManager : MonoBehaviour
         InvokeRepeating(nameof(CalculateDistances), startDelay, repeatInterval);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        // When a game object enters the collider, add it to the list
-        if (peers.Contains(other.gameObject))
-        {
-            objectsInside.Add(other.gameObject);
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        // When a game object exits the collider, remove it from the list
-        if (objectsInside.Contains(other.gameObject))
-        {
-            objectsInside.Remove(other.gameObject);
-        }
-    }
-
     private void CalculateDistances()
     {
         float lowestDistance = 100f;
 
-        if (objectsInside.Count == 0)
+        // Get all colliders within the sphere
+        Collider[] objectsInside = Physics.OverlapSphere(transform.position, checkRadius);
+
+        // If no game objects are inside the sphere, set peerPresenceLevel to 3
+        if (objectsInside.Length == 0)
         {
             peerPresenceLevel = 3;
+            return;
         }
 
         foreach (var obj in objectsInside)
         {
-            if (agentParam.peers.Contains(obj.gameObject))
+            if (peers.Contains(obj.gameObject))
             {
-                
+
                 //may need to check if they are on the same y axis. 
 
                 //If there is a peer within 2 meters, stress level is 1 (lowest), 
                 //If no peer is within 9 meters, stress level is 3 (highest)
                 float distance = Vector3.Distance(this.gameObject.transform.position, obj.gameObject.transform.position);
-                if(distance < lowestDistance)
+                if (distance < lowestDistance)
                 {
                     lowestDistance = distance;
                 }
-               
+
                 print("agent " + agentParam.name + " is colliding with " + obj.gameObject.name + " who is " + distance + "m away");
             }
 
@@ -96,9 +79,13 @@ public class PeerPresenceManager : MonoBehaviour
             peerPresenceLevel = 3;
         }
 
-      
-    }
 
+    }
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, checkRadius);
+    }
     private void getStressFromPeerPresence()
     {
 

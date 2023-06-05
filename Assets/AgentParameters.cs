@@ -18,6 +18,8 @@ public class AgentParameters : MonoBehaviour {
     [SerializeField] private AgentParameterGeneration.Cooperation cooperation;
     [SerializeField] private AgentParameterGeneration.EmergencyTraining emergencyTraining;
     [SerializeField] private float speed;
+    [SerializeField] public float originalSpeed;
+
     [SerializeField] private float mobilityStress;
     
     [SerializeField] private float stressThreshold;
@@ -51,8 +53,8 @@ public class AgentParameters : MonoBehaviour {
         stressManager = gameObject.GetComponent<StressManager>();
         simulationManager = GameObject.Find("SimulationManager").GetComponent<SimulationManager>(); 
         navMeshAgent = gameObject.GetComponent<NavMeshAgent>();
-       
-        navMeshAgent.speed = speed;
+
+        originalSpeed = Speed;
 
         maleMaterial = Resources.Load<Material>("Male");
         femaleMaterial = Resources.Load<Material>("Female");
@@ -73,6 +75,9 @@ public class AgentParameters : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+
+        navMeshAgent.speed = Speed;
+
         if (simulationManager.simIsRunning) {
             TimeToEvacuate += Time.deltaTime;
         }
@@ -84,7 +89,7 @@ public class AgentParameters : MonoBehaviour {
     {
         if(this.emergencyTraining == AgentParameterGeneration.EmergencyTraining.Low)
         {
-            return 1;
+            return 3;
         }
         if (emergencyTraining == AgentParameterGeneration.EmergencyTraining.Medium)
         {
@@ -92,7 +97,7 @@ public class AgentParameters : MonoBehaviour {
         }
         else
         {
-            return 3;
+            return 1;
         }
 
     }

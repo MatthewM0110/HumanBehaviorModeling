@@ -6,6 +6,16 @@ using UnityEngine.AI;
 public class AgentPathingDeterminer : MonoBehaviour
 {
 
+    public enum State
+    {
+        Calm,
+        Herding,
+        Panicking
+    }
+    [SerializeField] AgentParameterGeneration.StressLevel agentStressLevel;
+    [SerializeField] private State lastState = State.Calm;
+    [SerializeField] private State currentState = State.Calm;
+    [SerializeField] private GameObject closestAgent;
     private SimulationManager simulationManager;
     private bool isSpawned = false; //unique for each agent. True if Begin() has been called
     //Navigation 
@@ -15,6 +25,9 @@ public class AgentPathingDeterminer : MonoBehaviour
     [SerializeField] private Transform closestExit;
     [SerializeField] private GameObject[] exits;
     private GameObject[] closestExits = new GameObject[5];
+
+    public float checkRadius = 100f; // Set this to the desired radius
+    private float wanderRadius = 50f;
 
     // Start is called before the first frame update
     void Start()
@@ -26,8 +39,9 @@ public class AgentPathingDeterminer : MonoBehaviour
 
     }
 
-    public void Begin() {
-       
+    public void Begin()
+    {
+
         calcExitDistances();
         isSpawned = true;
         navMeshAgentComponent = gameObject.GetComponent<NavMeshAgent>();
@@ -38,22 +52,27 @@ public class AgentPathingDeterminer : MonoBehaviour
 
         //Agent stress initializer
         agentParameters.stressManager = this.gameObject.AddComponent<StressManager>();
+
         agentParameters.stressManager.DetermineStressLevel();
         agentParameters.stressManager.Begin();
-        if (agentParameters.EmergencyRecognition == AgentParameterGeneration.EmergencyRecognition.Lagging) {
+        if (agentParameters.EmergencyRecognition == AgentParameterGeneration.EmergencyRecognition.Lagging)
+        {
             print("I have lagging emergency Recognition");
             StartCoroutine(LaggingEvacuation());
-        } else {
+        }
+        else
+        {
             setInitialDestination();
         }
 
-        InvokeRepeating("DecisionState", 0, 1.1f); 
+        InvokeRepeating("DecisionState", 0, 10f);
 
     }
     // Update is called once per frame
     void Update()
     {
-        if(simulationManager.isAgentsSpawned && !isSpawned && simulationManager.simIsRunning) {
+        if (simulationManager.isAgentsSpawned && !isSpawned && simulationManager.simIsRunning)
+        {
             Begin();
         }
 
@@ -62,13 +81,72 @@ public class AgentPathingDeterminer : MonoBehaviour
 
     public void DecisionState()
     {
-        AgentParameterGeneration.StressLevel stressLevel = agentParameters.stressManager.StressLevel;
+        agentStressLevel = agentParameters.stressManager.StressLevel;
+
+        if (agentStressLevel == AgentParameterGeneration.StressLevel.Low)
+        {
+            currentState = State.Calm;
+            goToExit();
+        }
+        else if (agentStressLevel == AgentParameterGeneration.StressLevel.Medium)
+        {
+            currentState = State.Herding;
+            FollowClosestAgent();
+        }
+        else
+        {
+            currentState = State.Panicking;
+            Panicking();
+        }
+
+
+
         //What to do if their stress is high, med, low
+        lastState = currentState;
+    }
+    public void FollowClosestAgent()
+    {
+        float smallestDistance = float.MaxValue;
+
+        // Get all colliders within the sphere
+        Collider[] objectsInside = Physics.OverlapSphere(transform.position, checkRadius);
+
+        foreach (var obj in objectsInside)
+        {
+            NavMeshAgent agent = obj.GetComponent<NavMeshAgent>();
+            AgentPathingDeterminer otherAgentPathing = obj.gameObject.GetComponent<AgentPathingDeterminer>();
+            if (agent != null && agent != navMeshAgentComponent && otherAgentPathing.currentState != State.Herding && otherAgentPathing.closestAgent != this.gameObject)
+            {
+                float distance = Vector3.Distance(navMeshAgentComponent.transform.position, agent.transform.position);
+                if (distance < smallestDistance)
+                {
+                    smallestDistance = distance;
+                    closestAgent = agent.gameObject;
+                }
+            }
+        }
+
+        if (closestAgent != null)
+        {
+            navMeshAgentComponent.destination = closestAgent.transform.position;
+        }
+    }
+    public void Panicking()
+    {
+
+        Vector3 randomDirection = Random.insideUnitCircle * wanderRadius;
+        randomDirection += transform.position;
+
+        NavMeshHit hit;
+        NavMesh.SamplePosition(randomDirection, out hit, wanderRadius, 1);
+        navMeshAgentComponent.SetDestination(hit.position);
+
+
 
     }
+    private void setInitialDestination()
+    {
 
-    private void setInitialDestination() {
-       
         int exitsToChoose = 0;
 
         if (this.agentParameters.SpatialKnowledge == AgentParameterGeneration.SpatialKnowledge.Low)
@@ -113,16 +191,19 @@ public class AgentPathingDeterminer : MonoBehaviour
 
     private void goToExit()
     {
+
         navMeshAgentComponent.destination = destination.transform.position;
+
     }
 
 
-    IEnumerator LaggingEvacuation() {
+    IEnumerator LaggingEvacuation()
+    {
         //Print the time of when the function is first called.
-       // Debug.Log("Started Coroutine at timestamp : " + Time.time);
+        // Debug.Log("Started Coroutine at timestamp : " + Time.time);
 
         //yield on a new YieldInstruction that waits for 5 seconds.
-        yield return new WaitForSeconds(Random.Range(10,25));
+        yield return new WaitForSeconds(Random.Range(10, 25));
         setInitialDestination();
         //After we have waited 5 seconds print the time again.
         //Debug.Log("Finished Coroutine at timestamp : " + Time.time);
