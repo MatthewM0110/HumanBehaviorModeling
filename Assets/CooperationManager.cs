@@ -51,7 +51,7 @@ public class CooperationManager : MonoBehaviour
 
     private void ModifyAgentSpeed()
     {
-       if(cooperationStress == 1)
+       if(cooperationStress == 3)
         {
             agentParameters.Speed = originalSpeed * 0.9f;
 
@@ -60,7 +60,7 @@ public class CooperationManager : MonoBehaviour
 
             agentParameters.Speed = originalSpeed;
 
-        }else if(cooperationStress == 3)
+        }else if(cooperationStress == 1)
         {
             agentParameters.Speed = originalSpeed * 1.1f;
         }
