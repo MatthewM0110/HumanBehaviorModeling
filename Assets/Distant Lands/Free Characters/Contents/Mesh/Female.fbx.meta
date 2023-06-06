@@ -1,359 +1,127 @@
 fileFormatVersion: 2
 guid: dc1dacc99c42993499b968409533f7cb
 ModelImporter:
-  serializedVersion: 22200
-  internalIDToNameTable:
-  - first:
-      1: 100000
-    second: BezierCurve.002
-  - first:
-      1: 100002
-    second: Female
-  - first:
-      1: 100004
-    second: //RootNode
-  - first:
-      1: 100006
-    second: Head 1 Female
-  - first:
-      1: 100008
-    second: Head 1 Female Hair 1
-  - first:
-      1: 100010
-    second: Head 1 Female Hair 2
-  - first:
-      1: 100012
-    second: LowManHead
-  - first:
-      1: 100014
-    second: LowManHead_end
-  - first:
-      1: 100016
-    second: LowManHips
-  - first:
-      1: 100018
-    second: LowManLeftArm
-  - first:
-      1: 100020
-    second: LowManLeftFoot
-  - first:
-      1: 100022
-    second: LowManLeftForeArm
-  - first:
-      1: 100024
-    second: LowManLeftHand
-  - first:
-      1: 100026
-    second: LowManLeftHandMiddle1
-  - first:
-      1: 100028
-    second: LowManLeftHandMiddle2
-  - first:
-      1: 100030
-    second: LowManLeftHandMiddle2_end
-  - first:
-      1: 100032
-    second: LowManLeftHandThumb1
-  - first:
-      1: 100034
-    second: LowManLeftHandThumb1_end
-  - first:
-      1: 100036
-    second: LowManLeftLeg
-  - first:
-      1: 100038
-    second: LowManLeftShoulder
-  - first:
-      1: 100040
-    second: LowManLeftToeBase
-  - first:
-      1: 100042
-    second: LowManLeftToeBase_end
-  - first:
-      1: 100044
-    second: LowManLeftUpLeg
-  - first:
-      1: 100046
-    second: LowManNeck
-  - first:
-      1: 100048
-    second: LowManRightArm
-  - first:
-      1: 100050
-    second: LowManRightFoot
-  - first:
-      1: 100052
-    second: LowManRightForeArm
-  - first:
-      1: 100054
-    second: LowManRightHand
-  - first:
-      1: 100056
-    second: LowManRightHandMiddle1
-  - first:
-      1: 100058
-    second: LowManRightHandMiddle2
-  - first:
-      1: 100060
-    second: LowManRightHandMiddle2_end
-  - first:
-      1: 100062
-    second: LowManRightHandThumb1
-  - first:
-      1: 100064
-    second: LowManRightHandThumb1_end
-  - first:
-      1: 100066
-    second: LowManRightLeg
-  - first:
-      1: 100068
-    second: LowManRightShoulder
-  - first:
-      1: 100070
-    second: LowManRightToeBase
-  - first:
-      1: 100072
-    second: LowManRightToeBase_end
-  - first:
-      1: 100074
-    second: LowManRightUpLeg
-  - first:
-      1: 100076
-    second: LowManSpine
-  - first:
-      1: 100078
-    second: LowManSpine1
-  - first:
-      1: 100080
-    second: LowManSpine2
-  - first:
-      1: 100082
-    second: Pants Female
-  - first:
-      1: 100084
-    second: Shorts Female
-  - first:
-      1: 100086
-    second: Torso Female
-  - first:
-      1: 100088
-    second: Torso Female Short Sleeves
-  - first:
-      4: 400000
-    second: BezierCurve.002
-  - first:
-      4: 400002
-    second: //RootNode
-  - first:
-      4: 400004
-    second: Female
-  - first:
-      4: 400006
-    second: Head 1 Female
-  - first:
-      4: 400008
-    second: Head 1 Female Hair 1
-  - first:
-      4: 400010
-    second: Head 1 Female Hair 2
-  - first:
-      4: 400012
-    second: LowManHead
-  - first:
-      4: 400014
-    second: LowManHead_end
-  - first:
-      4: 400016
-    second: LowManHips
-  - first:
-      4: 400018
-    second: LowManLeftArm
-  - first:
-      4: 400020
-    second: LowManLeftFoot
-  - first:
-      4: 400022
-    second: LowManLeftForeArm
-  - first:
-      4: 400024
-    second: LowManLeftHand
-  - first:
-      4: 400026
-    second: LowManLeftHandMiddle1
-  - first:
-      4: 400028
-    second: LowManLeftHandMiddle2
-  - first:
-      4: 400030
-    second: LowManLeftHandMiddle2_end
-  - first:
-      4: 400032
-    second: LowManLeftHandThumb1
-  - first:
-      4: 400034
-    second: LowManLeftHandThumb1_end
-  - first:
-      4: 400036
-    second: LowManLeftLeg
-  - first:
-      4: 400038
-    second: LowManLeftShoulder
-  - first:
-      4: 400040
-    second: LowManLeftToeBase
-  - first:
-      4: 400042
-    second: LowManLeftToeBase_end
-  - first:
-      4: 400044
-    second: LowManLeftUpLeg
-  - first:
-      4: 400046
-    second: LowManNeck
-  - first:
-      4: 400048
-    second: LowManRightArm
-  - first:
-      4: 400050
-    second: LowManRightFoot
-  - first:
-      4: 400052
-    second: LowManRightForeArm
-  - first:
-      4: 400054
-    second: LowManRightHand
-  - first:
-      4: 400056
-    second: LowManRightHandMiddle1
-  - first:
-      4: 400058
-    second: LowManRightHandMiddle2
-  - first:
-      4: 400060
-    second: LowManRightHandMiddle2_end
-  - first:
-      4: 400062
-    second: LowManRightHandThumb1
-  - first:
-      4: 400064
-    second: LowManRightHandThumb1_end
-  - first:
-      4: 400066
-    second: LowManRightLeg
-  - first:
-      4: 400068
-    second: LowManRightShoulder
-  - first:
-      4: 400070
-    second: LowManRightToeBase
-  - first:
-      4: 400072
-    second: LowManRightToeBase_end
-  - first:
-      4: 400074
-    second: LowManRightUpLeg
-  - first:
-      4: 400076
-    second: LowManSpine
-  - first:
-      4: 400078
-    second: LowManSpine1
-  - first:
-      4: 400080
-    second: LowManSpine2
-  - first:
-      4: 400082
-    second: Pants Female
-  - first:
-      4: 400084
-    second: Shorts Female
-  - first:
-      4: 400086
-    second: Torso Female
-  - first:
-      4: 400088
-    second: Torso Female Short Sleeves
-  - first:
-      21: 2100000
-    second: Denim
-  - first:
-      21: 2100002
-    second: Boots.001
-  - first:
-      21: 2100004
-    second: Shirt 1.001
-  - first:
-      21: 2100006
-    second: Skin 1
-  - first:
-      21: 2100008
-    second: Hair
-  - first:
-      21: 2100010
-    second: Skin 1.001
-  - first:
-      21: 2100012
-    second: Shirt 1
-  - first:
-      21: 2100014
-    second: No Name
-  - first:
-      23: 2300000
-    second: BezierCurve.002
-  - first:
-      33: 3300000
-    second: BezierCurve.002
-  - first:
-      43: 4300000
-    second: Pants Female
-  - first:
-      43: 4300002
-    second: Torso Female
-  - first:
-      43: 4300004
-    second: Head 1 Female Hair 1
-  - first:
-      43: 4300006
-    second: Head 1 Female
-  - first:
-      43: 4300008
-    second: Shorts Female
-  - first:
-      43: 4300010
-    second: Torso Female Short Sleeves
-  - first:
-      43: 4300012
-    second: Head 1 Female Hair 2
-  - first:
-      43: 4300014
-    second: BezierCurve.002
-  - first:
-      95: 9500000
-    second: //RootNode
-  - first:
-      137: 13700000
-    second: Head 1 Female
-  - first:
-      137: 13700002
-    second: Head 1 Female Hair 1
-  - first:
-      137: 13700004
-    second: Head 1 Female Hair 2
-  - first:
-      137: 13700006
-    second: Pants Female
-  - first:
-      137: 13700008
-    second: Shorts Female
-  - first:
-      137: 13700010
-    second: Torso Female
-  - first:
-      137: 13700012
-    second: Torso Female Short Sleeves
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: BezierCurve.002
+    100002: Female
+    100004: //RootNode
+    100006: Head 1 Female
+    100008: Head 1 Female Hair 1
+    100010: Head 1 Female Hair 2
+    100012: LowManHead
+    100014: LowManHead_end
+    100016: LowManHips
+    100018: LowManLeftArm
+    100020: LowManLeftFoot
+    100022: LowManLeftForeArm
+    100024: LowManLeftHand
+    100026: LowManLeftHandMiddle1
+    100028: LowManLeftHandMiddle2
+    100030: LowManLeftHandMiddle2_end
+    100032: LowManLeftHandThumb1
+    100034: LowManLeftHandThumb1_end
+    100036: LowManLeftLeg
+    100038: LowManLeftShoulder
+    100040: LowManLeftToeBase
+    100042: LowManLeftToeBase_end
+    100044: LowManLeftUpLeg
+    100046: LowManNeck
+    100048: LowManRightArm
+    100050: LowManRightFoot
+    100052: LowManRightForeArm
+    100054: LowManRightHand
+    100056: LowManRightHandMiddle1
+    100058: LowManRightHandMiddle2
+    100060: LowManRightHandMiddle2_end
+    100062: LowManRightHandThumb1
+    100064: LowManRightHandThumb1_end
+    100066: LowManRightLeg
+    100068: LowManRightShoulder
+    100070: LowManRightToeBase
+    100072: LowManRightToeBase_end
+    100074: LowManRightUpLeg
+    100076: LowManSpine
+    100078: LowManSpine1
+    100080: LowManSpine2
+    100082: Pants Female
+    100084: Shorts Female
+    100086: Torso Female
+    100088: Torso Female Short Sleeves
+    400000: BezierCurve.002
+    400002: //RootNode
+    400004: Female
+    400006: Head 1 Female
+    400008: Head 1 Female Hair 1
+    400010: Head 1 Female Hair 2
+    400012: LowManHead
+    400014: LowManHead_end
+    400016: LowManHips
+    400018: LowManLeftArm
+    400020: LowManLeftFoot
+    400022: LowManLeftForeArm
+    400024: LowManLeftHand
+    400026: LowManLeftHandMiddle1
+    400028: LowManLeftHandMiddle2
+    400030: LowManLeftHandMiddle2_end
+    400032: LowManLeftHandThumb1
+    400034: LowManLeftHandThumb1_end
+    400036: LowManLeftLeg
+    400038: LowManLeftShoulder
+    400040: LowManLeftToeBase
+    400042: LowManLeftToeBase_end
+    400044: LowManLeftUpLeg
+    400046: LowManNeck
+    400048: LowManRightArm
+    400050: LowManRightFoot
+    400052: LowManRightForeArm
+    400054: LowManRightHand
+    400056: LowManRightHandMiddle1
+    400058: LowManRightHandMiddle2
+    400060: LowManRightHandMiddle2_end
+    400062: LowManRightHandThumb1
+    400064: LowManRightHandThumb1_end
+    400066: LowManRightLeg
+    400068: LowManRightShoulder
+    400070: LowManRightToeBase
+    400072: LowManRightToeBase_end
+    400074: LowManRightUpLeg
+    400076: LowManSpine
+    400078: LowManSpine1
+    400080: LowManSpine2
+    400082: Pants Female
+    400084: Shorts Female
+    400086: Torso Female
+    400088: Torso Female Short Sleeves
+    2100000: Denim
+    2100002: Boots.001
+    2100004: Shirt 1.001
+    2100006: Skin 1
+    2100008: Hair
+    2100010: Skin 1.001
+    2100012: Shirt 1
+    2100014: No Name
+    2300000: BezierCurve.002
+    3300000: BezierCurve.002
+    4300000: Pants Female
+    4300002: Torso Female
+    4300004: Head 1 Female Hair 1
+    4300006: Head 1 Female
+    4300008: Shorts Female
+    4300010: Torso Female Short Sleeves
+    4300012: Head 1 Female Hair 2
+    4300014: BezierCurve.002
+    9500000: //RootNode
+    13700000: Head 1 Female
+    13700002: Head 1 Female Hair 1
+    13700004: Head 1 Female Hair 2
+    13700006: Pants Female
+    13700008: Shorts Female
+    13700010: Torso Female
+    13700012: Torso Female Short Sleeves
   externalObjects: {}
   materials:
-    materialImportMode: 0
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -362,7 +130,6 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
-    removeConstantScaleCurves: 0
     motionNodeName: 
     rigImportErrors: 
     rigImportWarnings: 
@@ -393,35 +160,25 @@ ModelImporter:
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
-    sortHierarchyByName: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
-    nodeNameCollisionStrategy: 0
-    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
+    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
-    bakeAxisConversion: 0
     preserveHierarchy: 0
-    skinWeightsMode: 0
-    maxBonesPerVertex: 4
-    minBoneWeight: 0.001
-    optimizeBones: 1
-    meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
-    secondaryUVMarginMethod: 0
-    secondaryUVMinLightmapResolution: 40
-    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
-    strictVertexDataChecks: 0
+    previousCalculatedGlobalScale: 0.01
+    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -430,10 +187,10 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
-  referencedClips: []
   importAnimation: 0
+  copyAvatar: 0
   humanDescription:
-    serializedVersion: 3
+    serializedVersion: 2
     human:
     - boneName: LowManHips
       humanName: Hips
@@ -887,19 +644,13 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
   humanoidOversampling: 1
-  avatarSetup: 1
-  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
-  importBlendShapeDeformPercent: 0
-  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

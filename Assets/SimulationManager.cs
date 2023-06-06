@@ -54,7 +54,6 @@ public class SimulationManager : MonoBehaviour {
     {
       //  int totalWeight = mobilityWeight + trainingWeight + cooperationWeight + movementWeight + peerPresenceWeight;
         int totalWeight =  trainingWeight + cooperationWeight + movementWeight + peerPresenceWeight;
-
         //mobilityWeight = 100 * mobilityWeight / totalWeight;
         trainingWeight = 100 * trainingWeight / totalWeight;
         cooperationWeight = 100 * cooperationWeight / totalWeight;
