@@ -15,7 +15,7 @@ public class DataCollection : MonoBehaviour
     private bool isDataCollecting;
     [SerializeField]
     private SimulationManager simulationManager;
-    DataTable data = new DataTable(); 
+    DataTable data = new DataTable();
     string date;
 
     string filePath;
@@ -48,12 +48,15 @@ public class DataCollection : MonoBehaviour
             timeT += Time.deltaTime;
         }
         timeElapsed.text = (timeT).ToString();
-        if (Input.GetKeyDown(KeyCode.D)){
+        if (Input.GetKeyDown(KeyCode.D)) {
             ExportDataTableToCSV(data, filePath);
         }
 
     }
-
+    public void exportData()
+    {
+        ExportDataTableToCSV(data, filePath);
+    }
     public void beginDataCollection() {
         isDataCollecting = true;
     }

@@ -114,19 +114,25 @@ public class AgentParameterGeneration : MonoBehaviour
     //Iteratively Generates Agents based off default or user-defined value
     public void GenerateAgents()
     {
-
+        
         print("Generate");
         agentPop = 10;
-        int multiplyAgent = 1;
+        float multiplyAgent = 1;
 
         try
         {
+            //should be a percentage of total peers. Ie 80 will be 80% of normal spawn rates
             multiplyAgent = int.Parse(agentParameterChances.numberOfAgents.text);
+            //multiplyAgent = 10;
+            multiplyAgent = multiplyAgent / 100;
+            print("agent multiplying" + multiplyAgent);
         }
         catch
         {
 
         }
+
+        
         spawnPointsSmall = GameObject.FindGameObjectsWithTag("spawnSmall");
         spawnPointsMed = GameObject.FindGameObjectsWithTag("spawnMedium");
         spawnPointsLarge = GameObject.FindGameObjectsWithTag("spawnLarge");
@@ -150,24 +156,26 @@ public class AgentParameterGeneration : MonoBehaviour
                     //small
                     case 0:
                         agentPop = UnityEngine.Random.Range(1, 3);
-                        agentPop = agentPop * multiplyAgent;
+                        agentPop = (int)Math.Round(agentPop * multiplyAgent);
+
                         break;
                     //Med
                     case 1:
-                        agentPop = UnityEngine.Random.Range(8, 15);
-                        agentPop = agentPop * multiplyAgent;
+                        agentPop = UnityEngine.Random.Range(10, 15);
+                        agentPop = (int)Math.Round(agentPop * multiplyAgent);
+
 
                         break;
                     //Large
                     case 2:
-                        agentPop = UnityEngine.Random.Range(15, 20);
-                        agentPop = agentPop * multiplyAgent;
+                        agentPop = UnityEngine.Random.Range(20, 25);
+                        agentPop = (int)Math.Round(agentPop * multiplyAgent);
 
                         break;
                     //XL
                     case 3:
-                        agentPop = UnityEngine.Random.Range(20, 30);
-                        agentPop = agentPop * multiplyAgent;
+                        agentPop = UnityEngine.Random.Range(30, 40);
+                        agentPop = (int)Math.Round(agentPop * multiplyAgent);
 
                         break;
 
@@ -210,6 +218,7 @@ public class AgentParameterGeneration : MonoBehaviour
         
         simulationManager.currentAgents = agentSpawned;
         simulationManager.isAgentsSpawned = true;
+        simulationManager.BeginSimulation();
 
     }
 

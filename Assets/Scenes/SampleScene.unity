@@ -25509,6 +25509,7 @@ MonoBehaviour:
   simulationSpeedSlider: {fileID: 1478081442}
   simulationSpeedText: {fileID: 1306979779}
   timeScale: 1
+  testNumber: 2
   trainingWeight: 25
   cooperationWeight: 25
   movementWeight: 25
@@ -38118,7 +38119,7 @@ MonoBehaviour:
   maxPercentOfDisabledAgents: 5
   numberOfAgents: {fileID: 274628150}
   percentOfPeersSlider: {fileID: 1607095911}
-  percentOfPeers: 25
+  percentOfPeers: 10
   percentOfPeersText: {fileID: 2084603203}
 --- !u!114 &1286889792
 MonoBehaviour:
@@ -47906,9 +47907,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 33888767}
   m_Direction: 0
   m_MinValue: 1
-  m_MaxValue: 99
+  m_MaxValue: 20
   m_WholeNumbers: 1
-  m_Value: 25
+  m_Value: 10
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -63789,7 +63790,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Percent of Peers: 25'
+  m_text: 'Percent of Peers: 10'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

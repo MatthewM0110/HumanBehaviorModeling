@@ -4,7 +4,8 @@ using TMPro.Examples;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-
+using Unity.VisualScripting;
+using System;
 
 public class SimulationManager : MonoBehaviour {
     // Start is called before the first frame update
@@ -28,6 +29,12 @@ public class SimulationManager : MonoBehaviour {
     [Range(1, 15)]
     public float timeScale = 1;
 
+    [SerializeField] private bool agentsSpawned;
+
+    [SerializeField]
+    public int testNumber;
+    [SerializeField]
+    private int trial = 0;
 
     [Header("Stress Weights")]
    // [SerializeField]
@@ -44,12 +51,26 @@ public class SimulationManager : MonoBehaviour {
     //Disability weight?
     void Start() {
 
+        
+
+
     }
     public void OnValidate()
     {
         NormalizeWeights();
     }
-
+    private void runTest()
+    {
+        if (trial <= testNumber)
+        {
+            SpawnAgents();
+            
+          
+            trial++;
+            
+        }
+        
+    }
     private void NormalizeWeights()
     {
       //  int totalWeight = mobilityWeight + trainingWeight + cooperationWeight + movementWeight + peerPresenceWeight;
@@ -63,24 +84,33 @@ public class SimulationManager : MonoBehaviour {
     }
     // Update is called once per frame
     void Update() {
+
         currentAgentsDisplay.text = currentAgents.ToString();
         if(currentAgents <= 0) {
             simIsRunning = false;
+            agentsSpawned = false;
+            dataCollector.GetComponent<DataCollection>().exportData();
+            runTest();
+         
         }
         
     }
 
     public void SpawnAgents() {
 
-        agentGenerator.GetComponent<AgentParameterGeneration>().GenerateAgents(); //Access AgentParamGen script and calls GenAgent funct
+            agentGenerator.GetComponent<AgentParameterGeneration>().GenerateAgents(); //Access AgentParamGen script and calls GenAgent funct;'
+        
+       
     }
 
     public void BeginSimulation() {
+      
+            simIsRunning = true;
+            dataCollector.GetComponent<DataCollection>().beginDataCollection(); //Access AgentParamGen script and calls GenAgent funct
+            CameraController mainCamController = GameObject.FindGameObjectWithTag("MainCamera").gameObject.GetComponent<CameraController>();
+            mainCamController.CameraTarget = GameObject.Find("Agent1").gameObject.transform;
 
-        simIsRunning = true;
-        dataCollector.GetComponent<DataCollection>().beginDataCollection(); //Access AgentParamGen script and calls GenAgent funct
-        CameraController mainCamController = GameObject.FindGameObjectWithTag("MainCamera").gameObject.GetComponent<CameraController>();
-        mainCamController.CameraTarget = GameObject.Find("Agent1").gameObject.transform;
+        
     }
     public void setSimulationSpeed(float newSpeed)
     {
