@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using UnityEditor.U2D;
 using UnityEngine;
 
@@ -32,7 +33,7 @@ public class AgentParameterGeneration : MonoBehaviour
     public enum MovementPercentChange
     {
 
-        WakingStick = 15, // 15% change 
+        WalkingStick = 15, // 15% change 
         Crutch = 10, // 10% change  
         WheelChair = 10 // 10% change
 
@@ -119,6 +120,11 @@ public class AgentParameterGeneration : MonoBehaviour
         agentPop = 10;
         float multiplyAgent = 1;
 
+        float scalingFactor = multiplyAgent;  // Renamed from multiplyAgent for clarity
+        float u1, u2;  // Uniformly-distributed random variables
+        float randStdNormal;  // Standard normally-distributed variable
+        float randNormal;  // Normally-distributed variable with custom mean and stdDev
+
         try
         {
             //should be a percentage of total peers. Ie 80 will be 80% of normal spawn rates
@@ -151,6 +157,7 @@ public class AgentParameterGeneration : MonoBehaviour
             //print(allSpawns.Length);
             for (int j = 0; j < allSpawns[k].Length; j++)
             { //Loops through each spawnPoints i
+                /*
                 switch (k)
                 {
                     //small
@@ -179,18 +186,106 @@ public class AgentParameterGeneration : MonoBehaviour
 
                         break;
 
+                }*/
+
+                switch (k)
+                {
+                    case 0:  // Small
+                        u1 = UnityEngine.Random.Range(0f, 1f);
+                        u2 = UnityEngine.Random.Range(0f, 1f);
+                        randStdNormal = Mathf.Sqrt(-2.0f * Mathf.Log(u1)) * Mathf.Sin(2.0f * Mathf.PI * u2);  // Box-Muller transform
+                        randNormal = 2 + randStdNormal * 1;  // mean=2, stdDev=1
+                        agentPop = (int)Mathf.Round(randNormal * scalingFactor);
+                        if (agentPop < 0)
+                        {
+                            agentPop = 0;  // Ensure population is non-negative
+                        }
+                        Debug.Log($"Case: Small, Agent Population: {agentPop}");
+
+                        break;
+
+                    case 1:  // Medium
+                        u1 = UnityEngine.Random.Range(0f, 1f);
+                        u2 = UnityEngine.Random.Range(0f, 1f);
+                        randStdNormal = Mathf.Sqrt(-2.0f * Mathf.Log(u1)) * Mathf.Sin(2.0f * Mathf.PI * u2);  // Box-Muller transform
+                        randNormal = 12.5f + randStdNormal * 2.5f;  // mean=12.5, stdDev=2.5
+                        agentPop = (int)Mathf.Round(randNormal * scalingFactor);
+                        Debug.Log($"Case: Medium, Agent Population: {agentPop}");
+                        break;
+                       
+
+                    case 2:  // Large
+                        u1 = UnityEngine.Random.Range(0f, 1f);
+                        u2 = UnityEngine.Random.Range(0f, 1f);
+                        randStdNormal = Mathf.Sqrt(-2.0f * Mathf.Log(u1)) * Mathf.Sin(2.0f * Mathf.PI * u2);  // Box-Muller transform
+                        randNormal = 22.5f + randStdNormal * 2.5f;  // mean=22.5, stdDev=2.5
+                        agentPop = (int)Mathf.Round(randNormal * scalingFactor);
+                        Debug.Log($"Case: Large, Agent Population: {agentPop}");
+
+                        break;
+
+                    case 3:  // Extra Large
+                        u1 = UnityEngine.Random.Range(0f, 1f);
+                        u2 = UnityEngine.Random.Range(0f, 1f);
+                        randStdNormal = Mathf.Sqrt(-2.0f * Mathf.Log(u1)) * Mathf.Sin(2.0f * Mathf.PI * u2);  // Box-Muller transform
+                        randNormal = 35f + randStdNormal * 5f;  // mean=35, stdDev=5
+                        agentPop = (int)Mathf.Round(randNormal * scalingFactor);
+                        Debug.Log($"Case: XL, Agent Population: {agentPop}");
+
+                        break;
                 }
+
                 for (int i = 0; i < agentPop; i++)
                 {
 
                     GameObject agent = Instantiate(agentPrefab, allSpawns[k][j].transform.position, Quaternion.identity);
-                    createAgent(agent);
+                    createAgent(agent); 
 
                 }
             }
         }
+        //All agents have been created, we could ensure disabilities percentages are accuracte
 
-        foreach(GameObject agent in activeAgents)
+        int totalAgents = activeAgents.Count; // Assuming activeAgents contains all the agents
+        int desiredDisabledAgentCount = (int)Math.Round(totalAgents * (agentParameterChances.maxPercentOfDisabledAgents / 100f));
+        int discrepancy = desiredDisabledAgentCount - disabledAgentCount;
+        if (discrepancy > 0)
+        {
+            List<GameObject> nonDisabledAgents = activeAgents.Where(a => a.GetComponent<AgentParameters>().MovementPercentChange == 0).ToList();
+            // Randomly choose agents from nonDisabledAgents and set them to be disabled
+            for (int i = 0; i < discrepancy; i++)
+            {
+                int indexToDisable = UnityEngine.Random.Range(0, nonDisabledAgents.Count);
+                GameObject agentToDisable = nonDisabledAgents[indexToDisable];
+                AgentParameters agentParam = agentToDisable.GetComponent<AgentParameters>();
+                agentParam.MovementPercentChange = MovementPercentChange.Crutch; // This could be any disabled status
+
+                // Recalculate speed after changing the disability status
+                agentParam.Speed = calcSpeed((int)agentParam.Age, agentParam.Gender, agentParam.MovementPercentChange);
+
+                nonDisabledAgents.RemoveAt(indexToDisable);
+                disabledAgentCount++;
+            }
+        }
+        else if (discrepancy < 0)
+        {
+            List<GameObject> disabledAgents = activeAgents.Where(a => a.GetComponent<AgentParameters>().MovementPercentChange != 0).ToList();
+            // Randomly choose agents from disabledAgents and set them to be non-disabled
+            for (int i = 0; i < Math.Abs(discrepancy); i++)
+            {
+                int indexToEnable = UnityEngine.Random.Range(0, disabledAgents.Count);
+                GameObject agentToEnable = disabledAgents[indexToEnable];
+                AgentParameters agentParam = agentToEnable.GetComponent<AgentParameters>();
+                agentParam.MovementPercentChange = 0; // This sets the agent to be non-disabled
+
+                // Recalculate speed after changing the disability status
+                agentParam.Speed = calcSpeed((int)agentParam.Age, agentParam.Gender, agentParam.MovementPercentChange);
+
+                disabledAgents.RemoveAt(indexToEnable);
+                disabledAgentCount--;
+            }
+        }
+        foreach (GameObject agent in activeAgents)
         {
             //int numberOfPeers = UnityEngine.Random.Range(1,4);
             AgentParameterChances agentParameterChances = FindObjectOfType<AgentParameterChances>();
@@ -246,7 +341,7 @@ public class AgentParameterGeneration : MonoBehaviour
         agent.transform.rotation = new Quaternion(90f, -0.5f, 0.25f, 0);
         agentParam.MobilityStress = calcInitialStress(agentParam.Speed);
         agentParam.EmergencyTraining = calcEmergencyTraining();
-        agentParam.Cooperation = CalcCooperation();
+        agentParam.Cooperation = calcCooperation();
         ///stressManager.DetermineStressLevel();
         activeAgents.Add(agent);
        
@@ -285,7 +380,7 @@ public class AgentParameterGeneration : MonoBehaviour
         }
         return speed;
     }
-    public Cooperation CalcCooperation()
+    public Cooperation calcCooperation()
     {
         // Generate a random number between 1 and 3
         int randomNum = UnityEngine.Random.Range(1, 4);
@@ -316,12 +411,28 @@ public class AgentParameterGeneration : MonoBehaviour
 
         float min = agentParameterChances.minAge;
         float max = agentParameterChances.maxAge;
+        // Set mu to be closer to min to ensure peak is around 20-30
+        float mu = min + 5; // Mean (peak of the distribution)
 
-        return random.Next((int)min, (int)max + 1);
+     
+        float sigma = (max - min) / 3; // Standard deviation (spread)
+
+        // Create a normally distributed value using Box-Muller transform
+        double u1 = 1.0 - random.NextDouble();
+        double u2 = 1.0 - random.NextDouble();
+        double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) * Math.Sin(2.0 * Math.PI * u2);
+        double randNormal = mu + sigma * randStdNormal;
+
+        // Clamp the value between min and max
+        int age = (int)Math.Round(Math.Clamp(randNormal, min, max));
+
+        return age;
     }
+    
 
     private MovementPercentChange calcDisabilities()
     {
+        //Change to be exact percent of disabled Agents. 
         float percentOfDisabledAgents = agentParameterChances.maxPercentOfDisabledAgents;
 
         float randomValue = UnityEngine.Random.Range(0f, 1f);
@@ -331,7 +442,6 @@ public class AgentParameterGeneration : MonoBehaviour
             var random = new System.Random();
             var randomMovementPercentChange = (MovementPercentChange)values.GetValue(random.Next(values.Length));
             disabledAgentCount++;
-            print(disabledAgentCount);
             return randomMovementPercentChange;
         }
 
@@ -379,7 +489,7 @@ public class AgentParameterGeneration : MonoBehaviour
         System.Random random = new System.Random();
         int randomValue = random.Next(100);
 
-        if (randomValue < 40) // 40% chance for Low
+        if (randomValue < 40) // 40% chance for Loww
         {
             return SpatialKnowledge.Low;
         }

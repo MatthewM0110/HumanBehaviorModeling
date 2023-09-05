@@ -51,7 +51,8 @@ public class SimulationManager : MonoBehaviour {
     //Disability weight?
     void Start() {
 
-        
+
+        SpawnAgents();
 
 
     }
@@ -63,7 +64,6 @@ public class SimulationManager : MonoBehaviour {
     {
         if (trial <= testNumber)
         {
-            SpawnAgents();
             
           
             trial++;
