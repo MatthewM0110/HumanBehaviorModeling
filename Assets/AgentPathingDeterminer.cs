@@ -29,6 +29,9 @@ public class AgentPathingDeterminer : MonoBehaviour
     public float checkRadius = 100f; // Set this to the desired radius
     private float wanderRadius = 50f;
 
+    private float smallAgentExitThreshold = 0.05f; //as a percentage (5%)
+    private float smallAgentExitTimeLimit = 60f; // 60 Seconds
+    private float smallAgentExitTimeCount = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -82,7 +85,7 @@ public class AgentPathingDeterminer : MonoBehaviour
     public void DecisionState()
     {
         agentStressLevel = agentParameters.stressManager.StressLevel;
-
+        
         if (agentStressLevel == AgentParameterGeneration.StressLevel.Low)
         {
             currentState = State.Calm;
@@ -99,7 +102,14 @@ public class AgentPathingDeterminer : MonoBehaviour
             Panicking();
         }
 
-
+        if (smallAgentExitTimeCount >= smallAgentExitTimeLimit)
+        {
+            goToExit();
+        }
+        else if (simulationManager.currentAgents < simulationManager.initialAgentSize * smallAgentExitThreshold)
+        {
+            smallAgentExitTimeCount += 10;
+        }
 
         //What to do if their stress is high, med, low
         lastState = currentState;

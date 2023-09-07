@@ -68,7 +68,6 @@ public class StressManager : MonoBehaviour
         movementWeight = sim.movementWeight;
         peerPresenceWeight = sim.peerPresenceWeight;
 
-
         maxStress = 0;
         averageStress = 0;
         stressUpdateCount = 0;

@@ -18,6 +18,8 @@ public class SimulationManager : MonoBehaviour {
     [SerializeField]
     public bool isAgentsSpawned = false;
     [SerializeField]
+    public int initialAgentSize;
+    [SerializeField]
     public int currentAgents;
     [SerializeField]
     public TMP_Text currentAgentsDisplay;
@@ -115,7 +117,7 @@ public void OnValidate()
     public void SpawnAgents() {
 
             agentGenerator.GetComponent<AgentParameterGeneration>().GenerateAgents(); //Access AgentParamGen script and calls GenAgent funct;'
-        
+        initialAgentSize = currentAgents;
        
     }
 

@@ -247,6 +247,7 @@ public class AgentParameterGeneration : MonoBehaviour
         //All agents have been created, we could ensure disabilities percentages are accuracte
 
         int totalAgents = activeAgents.Count; // Assuming activeAgents contains all the agents
+        simulationManager.initialAgentSize = totalAgents;
         int desiredDisabledAgentCount = (int)Math.Round(totalAgents * (agentParameterChances.maxPercentOfDisabledAgents / 100f));
         int discrepancy = desiredDisabledAgentCount - disabledAgentCount;
         if (discrepancy > 0)
