@@ -50,9 +50,11 @@ public class SimulationManager : MonoBehaviour {
 
     //Disability weight?
 
+
     public string[] targetTags = { "spawnSmall", "spawnMedium", "spawnLarge", "spawnXL" };
     void Start()
     {
+
 
         // Array to hold the target tags
         PrintObjectCountsForTags();
@@ -78,7 +80,6 @@ public void OnValidate()
     {
         if (trial <= testNumber)
         {
-            SpawnAgents();
             
           
             trial++;
