@@ -20,7 +20,7 @@ public class SimulationManager : MonoBehaviour {
     [SerializeField]
     public int currentAgents;
     [SerializeField]
-    public TMP_Text currentAgentsDisplay; 
+    public TMP_Text currentAgentsDisplay;
     [SerializeField]
     Slider simulationSpeedSlider;
     [SerializeField]
@@ -37,8 +37,8 @@ public class SimulationManager : MonoBehaviour {
     private int trial = 0;
 
     [Header("Stress Weights")]
-   // [SerializeField]
-   // [Range(0, 100)] public int mobilityWeight = 20;
+    // [SerializeField]
+    // [Range(0, 100)] public int mobilityWeight = 20;
     [SerializeField]
     [Range(0, 100)] public int trainingWeight = 20;
     [SerializeField]
@@ -49,14 +49,30 @@ public class SimulationManager : MonoBehaviour {
     [Range(0, 100)] public int peerPresenceWeight = 20;
 
     //Disability weight?
-    void Start() {
 
 
-        SpawnAgents();
+    public string[] targetTags = { "spawnSmall", "spawnMedium", "spawnLarge", "spawnXL" };
+    void Start()
+    {
 
+
+        // Array to hold the target tags
+        PrintObjectCountsForTags();
 
     }
-    public void OnValidate()
+    // Function to count and print the number of objects for each specified tag
+    public void PrintObjectCountsForTags()
+    {
+        foreach (string tag in targetTags)
+        {
+            GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag(tag);
+            int count = objectsWithTag.Length;
+            Debug.Log("Number of objects with tag '" + tag + "': " + count);
+        }
+    }
+
+
+public void OnValidate()
     {
         NormalizeWeights();
     }
@@ -88,9 +104,9 @@ public class SimulationManager : MonoBehaviour {
         currentAgentsDisplay.text = currentAgents.ToString();
         if(currentAgents <= 0) {
             simIsRunning = false;
-            agentsSpawned = false;
-            dataCollector.GetComponent<DataCollection>().exportData();
-            runTest();
+           agentsSpawned = false;
+            //dataCollector.GetComponent<DataCollection>().exportData();
+            //runTest();
          
         }
         

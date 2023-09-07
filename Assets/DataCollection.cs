@@ -15,31 +15,56 @@ public class DataCollection : MonoBehaviour
     private bool isDataCollecting;
     [SerializeField]
     private SimulationManager simulationManager;
-    DataTable data = new DataTable();
+    DataTable masterDataTable = new DataTable();
+    DataTable stressDataTable = new DataTable();
     string date;
 
-    string filePath;
+    string masterDataFilePath;
+    string stressDataFilePath; 
 
     // Start is called before the first frame update
     private float timeT = 0;
     void Start()
     {
-        data.Columns.Add("Time to Evacuate");
-        data.Columns.Add("Age");
-        data.Columns.Add("Gender");
-        data.Columns.Add("Disability");
-        data.Columns.Add("SpatialKnowledge");
-        data.Columns.Add("Observation of Environment");
-        data.Columns.Add("Emergency Training");
-        data.Columns.Add("Initial Stress");
-        data.Columns.Add("Maximum Stress");
-        data.Columns.Add("Average Stress");
-        data.Columns.Add("Stress on Exit");
-        data.Columns.Add("Number of Peers");
+        masterDataTable.Columns.Add("UniqueID");
+        masterDataTable.Columns.Add("Time to Evacuate");
+        masterDataTable.Columns.Add("Age");
+        masterDataTable.Columns.Add("Gender");
+        masterDataTable.Columns.Add("Disability");
+        masterDataTable.Columns.Add("SpatialKnowledge");
+        masterDataTable.Columns.Add("Observation of Environment");
+        masterDataTable.Columns.Add("Emergency Training");
+        masterDataTable.Columns.Add("Initial Stress");
+        masterDataTable.Columns.Add("Maximum Stress");
+        masterDataTable.Columns.Add("Average Stress");
+        masterDataTable.Columns.Add("Stress on Exit");
+        masterDataTable.Columns.Add("Number of Peers");
+
+        stressDataTable.Columns.Add("AgentID");
+
 
         date = DateTime.Now.ToString("dd-MM-yyyy&HH-mm");
-        filePath = Application.dataPath + "/Data/data" + date + ".csv";
-    }
+
+        // Define the folder based on the current date
+        string folderPath = Application.dataPath + "/Data/" + date;
+
+        // Check if the directory exists, if not, create it
+        if (!Directory.Exists(folderPath))
+        {
+            Directory.CreateDirectory(folderPath);
+        }
+        else
+        {
+        }
+
+        // Now, define your file paths inside this folder
+        masterDataFilePath = folderPath + "/MasterData.csv";
+        stressDataFilePath = folderPath + "/StressData.csv";
+
+        
+    
+
+}
 
     // Update is called once per frame
     void Update()
@@ -49,24 +74,53 @@ public class DataCollection : MonoBehaviour
         }
         timeElapsed.text = (timeT).ToString();
         if (Input.GetKeyDown(KeyCode.D)) {
-            ExportDataTableToCSV(data, filePath);
+            ExportDataTableToCSV(masterDataTable, masterDataFilePath);
+            ExportDataTableToCSV(stressDataTable, stressDataFilePath);
+
         }
 
     }
     public void exportData()
     {
-        ExportDataTableToCSV(data, filePath);
+        ExportDataTableToCSV(masterDataTable, masterDataFilePath);
     }
     public void beginDataCollection() {
         isDataCollecting = true;
     }
-    public void addDataRow(float timeToEvacuate, float age ,AgentParameterGeneration.Gender gender, 
+    public void addDataRow(int agentID, float timeToEvacuate, float age ,AgentParameterGeneration.Gender gender, 
         String disability, AgentParameterGeneration.SpatialKnowledge spatialKnowledge, AgentParameterGeneration.EmergencyRecognition emergencyRecognition, 
         AgentParameterGeneration.EmergencyTraining emergencyTraining,
         float initialStress, float maxStress, float averageStress, float exitStress, int numberOfPeers) {
 
-        data.Rows.Add(timeToEvacuate.ToString(), age.ToString(), gender.ToString(), disability.ToString(), spatialKnowledge, emergencyRecognition, emergencyTraining
+        masterDataTable.Rows.Add(agentID.ToString(), timeToEvacuate.ToString(), age.ToString(), gender.ToString(), disability.ToString(), spatialKnowledge, emergencyRecognition, emergencyTraining
             , initialStress, maxStress, averageStress, exitStress, numberOfPeers);
+    }
+
+    public void addStressDataRow(int agentID, Dictionary<float, float> stressData)
+    {
+        // Convert the dictionary values (stress scores) into a list
+        List<float> stressScores = new List<float>(stressData.Values);
+
+        // Check if the table has enough columns; if not, add them
+        while (stressDataTable.Columns.Count < stressScores.Count + 1)  // +1 for the AgentID column
+        {
+            stressDataTable.Columns.Add("Interval " + stressDataTable.Columns.Count);
+        }
+
+        // Create a new data row
+        DataRow newRow = stressDataTable.NewRow();
+
+        // Set the agent's ID as the first column's value
+        newRow["AgentID"] = agentID.ToString();
+
+        // Fill in the rest of the columns with stress scores
+        for (int i = 0; i < stressScores.Count; i++)
+        {
+            newRow["Interval " + (i + 1)] = stressScores[i].ToString();
+        }
+
+        // Add the new row to the data table
+        stressDataTable.Rows.Add(newRow);
     }
 
     private void ExportDataTableToCSV(DataTable dataTable, string filePath) {

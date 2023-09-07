@@ -25509,11 +25509,18 @@ MonoBehaviour:
   simulationSpeedSlider: {fileID: 1478081442}
   simulationSpeedText: {fileID: 1306979779}
   timeScale: 1
+  agentsSpawned: 0
   testNumber: 2
+  trial: 0
   trainingWeight: 25
   cooperationWeight: 25
   movementWeight: 25
   peerPresenceWeight: 25
+  targetTags:
+  - spawnSmall
+  - spawnMedium
+  - spawnLarge
+  - spawnXL
 --- !u!4 &884068134
 Transform:
   m_ObjectHideFlags: 0

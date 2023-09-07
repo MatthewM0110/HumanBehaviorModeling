@@ -9,18 +9,30 @@ public class AgentData : MonoBehaviour {
     private AgentParameters currentAgentParameter;
     private SimulationManager simulationManager;
     private DataCollection dataCollection;
-
+    private Dictionary<float, float> stressData = new Dictionary<float, float>();
+    private float timeInterval = 2f;
+    private float interval = 0f; 
     // Start is called before the first frame update
     void Start()
     {
+        currentAgentParameter = this.gameObject.GetComponent<AgentParameters>();
         simulationManager = GameObject.Find("SimulationManager").GetComponent<SimulationManager>();
         dataCollection = GameObject.Find("DataCollector").GetComponent<DataCollection>();
+        InvokeRepeating("addStressValue", 0f, timeInterval);
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    private void addStressValue()
+    {
+        //stressData[interval] = this.currentAgentParameter.stressManager.Stress; //Should I get average stress or current stress?
+        stressData[interval] = this.currentAgentParameter.stressManager.AverageStress; //Should I get average stress or current stress?
+
+        interval += timeInterval;
     }
     public void OnTriggerEnter(Collider other) {
 
@@ -34,7 +46,8 @@ public class AgentData : MonoBehaviour {
                 disability = currentAgentParameter.MovementPercentChange.ToString();
 
             }
-            dataCollection.addDataRow(currentAgentParameter.TimeToEvacuate, currentAgentParameter.Age, currentAgentParameter.Gender, disability, currentAgentParameter.SpatialKnowledge, currentAgentParameter.EmergencyRecognition, currentAgentParameter.EmergencyTraining, currentAgentParameter.MobilityStress, currentAgentParameter.stressManager.MaxStress, currentAgentParameter.stressManager.AverageStress, currentAgentParameter.stressManager.Stress, currentAgentParameter.peers.Count);
+            dataCollection.addDataRow(currentAgentParameter.UniqueID, currentAgentParameter.TimeToEvacuate, currentAgentParameter.Age, currentAgentParameter.Gender, disability, currentAgentParameter.SpatialKnowledge, currentAgentParameter.EmergencyRecognition, currentAgentParameter.EmergencyTraining, currentAgentParameter.MobilityStress, currentAgentParameter.stressManager.MaxStress, currentAgentParameter.stressManager.AverageStress, currentAgentParameter.stressManager.Stress, currentAgentParameter.peers.Count);
+            dataCollection.addStressDataRow(currentAgentParameter.UniqueID, stressData);
             simulationManager.currentAgents--;
             Destroy(this.gameObject);
         }
