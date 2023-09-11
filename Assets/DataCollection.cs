@@ -75,7 +75,7 @@ public class DataCollection : MonoBehaviour
         masterDataFilePath = folderPath + "/MasterData.csv";
         stressDataFilePath = folderPath + "/StressData.csv";
         averageStressDataFilePath = folderPath + "/AverageStressData.csv";
-         closePeers2mFilePath = folderPath + "/ClosePeers3meters.csv";
+         closePeers2mFilePath = folderPath + "/ClosePeers2meters.csv";
         closePeers9mFilePath = folderPath + "/ClosePeers9meters.csv";
         averageCooperationNearbyFilePath = folderPath + "/AverageNearbyCooperation.csv";
 
@@ -182,7 +182,7 @@ public class DataCollection : MonoBehaviour
         // Check if the table has enough columns; if not, add them
         while (closePeers2mDataTable.Columns.Count < closePeers.Count + 1)  // +1 for the AgentID column
         {
-            averageStressDataTable.Columns.Add("Interval " + averageStressDataTable.Columns.Count);
+            closePeers2mDataTable.Columns.Add("Interval " + closePeers2mDataTable.Columns.Count);
         }
 
         // Create a new data row
@@ -199,6 +199,34 @@ public class DataCollection : MonoBehaviour
 
         // Add the new row to the data table
         closePeers2mDataTable.Rows.Add(newRow);
+    }
+
+
+    public void addClosePeers9mDataRow(int agentID, Dictionary<float, float> closePeers9m)
+    {
+        // Convert the dictionary values (stress scores) into a list
+        List<float> closePeers = new List<float>(closePeers9m.Values);
+
+        // Check if the table has enough columns; if not, add them
+        while (closePeers9mDataTable.Columns.Count < closePeers.Count + 1)  // +1 for the AgentID column
+        {
+            closePeers9mDataTable.Columns.Add("Interval " + closePeers9mDataTable.Columns.Count);
+        }
+
+        // Create a new data row
+        DataRow newRow = closePeers9mDataTable.NewRow();
+
+        // Set the agent's ID as the first column's value
+        newRow["AgentID"] = agentID.ToString();
+
+        // Fill in the rest of the columns with stress scores
+        for (int i = 0; i < closePeers.Count; i++)
+        {
+            newRow["Interval " + (i + 1)] = closePeers[i].ToString();
+        }
+
+        // Add the new row to the data table
+        closePeers9mDataTable.Rows.Add(newRow);
     }
 
 

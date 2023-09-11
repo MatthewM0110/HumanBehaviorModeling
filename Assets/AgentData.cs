@@ -52,6 +52,8 @@ public class AgentData : MonoBehaviour {
             dataCollection.addStressDataRow(currentAgentParameter.UniqueID, stressData);
             dataCollection.addAverageStressDataRow(currentAgentParameter.UniqueID, averageStressData);
             dataCollection.addAverageCooperationDataRow(currentAgentParameter.UniqueID, this.gameObject.GetComponent<CooperationManager>().averageCooperationDict);
+            dataCollection.addClosePeers2mDataRow(currentAgentParameter.UniqueID, this.gameObject.GetComponent<PeerPresenceManager>().closePeers2m);
+            dataCollection.addClosePeers9mDataRow(currentAgentParameter.UniqueID, this.gameObject.GetComponent<PeerPresenceManager>().closePeers9m);
 
             simulationManager.currentAgents--;
 
