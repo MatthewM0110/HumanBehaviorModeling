@@ -57,6 +57,8 @@ public class StressManager : MonoBehaviour
         agentSpeed = agentParameters.Speed;
 
     }
+   float stressTotal;
+
     public void Begin()
     {
         SimulationManager sim = FindObjectOfType<SimulationManager>();
@@ -70,7 +72,8 @@ public class StressManager : MonoBehaviour
 
         maxStress = 0;
         averageStress = 0;
-        stressUpdateCount = 0;
+        stressUpdateCount = 1;
+        stressTotal = 0;
         position = new Vector3(0, 0, 0);
         InvokeRepeating("UpdateStress", 0, 1f);
         InvokeRepeating("DetermineStressLevel", 0f, 1f);
@@ -132,12 +135,13 @@ public class StressManager : MonoBehaviour
         }
 
 
-
-        // Update averageStress
+        stressTotal += currentStress;
+        averageStress = stressTotal / stressUpdateCount;
         stressUpdateCount++;
-        averageStress = ((averageStress * (stressUpdateCount - 1)) + currentStress) / stressUpdateCount;
+        // Update averageStress
 
         // Update stress level
+        AverageStress = averageStress;
         Stress = currentStress;
         DetermineStressLevel();
     }
