@@ -22,6 +22,11 @@ public class PeerPresenceManager : MonoBehaviour
     [SerializeField]
     public float peerPresenceLevel;
 
+    //Data collection
+    private DataCollection dataCollection;
+    public Dictionary<float, float> closePeers2m = new Dictionary<float, float>();
+    public Dictionary<float, float> closePeers9m = new Dictionary<float, float>();
+
     private void Start()
     {
         agentParam = this.gameObject.GetComponent<AgentParameters>();
