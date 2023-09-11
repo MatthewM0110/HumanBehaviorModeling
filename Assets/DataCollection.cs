@@ -17,10 +17,20 @@ public class DataCollection : MonoBehaviour
     private SimulationManager simulationManager;
     DataTable masterDataTable = new DataTable();
     DataTable stressDataTable = new DataTable();
+    DataTable averageStressDataTable = new DataTable();
+    DataTable closePeers2mDataTable = new DataTable();
+    DataTable closePeers9mDataTable = new DataTable();
+    DataTable averageCooperationNearbyDataTable = new DataTable();
+
     string date;
 
     string masterDataFilePath;
-    string stressDataFilePath; 
+    string stressDataFilePath;
+    string averageStressDataFilePath;
+    string closePeers2mFilePath;
+    string closePeers9mFilePath;
+    string averageCooperationNearbyFilePath;
+
 
     // Start is called before the first frame update
     private float timeT = 0;
@@ -41,6 +51,10 @@ public class DataCollection : MonoBehaviour
         masterDataTable.Columns.Add("Number of Peers");
 
         stressDataTable.Columns.Add("AgentID");
+        averageStressDataTable.Columns.Add("AgentID");
+        closePeers2mDataTable.Columns.Add("AgentID"); ;
+        closePeers9mDataTable.Columns.Add("AgentID"); ;
+        averageCooperationNearbyDataTable.Columns.Add("AgentID");;
 
 
         date = DateTime.Now.ToString("dd-MM-yyyy&HH-mm");
@@ -60,11 +74,15 @@ public class DataCollection : MonoBehaviour
         // Now, define your file paths inside this folder
         masterDataFilePath = folderPath + "/MasterData.csv";
         stressDataFilePath = folderPath + "/StressData.csv";
+        averageStressDataFilePath = folderPath + "/AverageStressData.csv";
+         closePeers2mFilePath = folderPath + "/ClosePeers2meters.csv";
+        closePeers9mFilePath = folderPath + "/ClosePeers9meters.csv";
+        averageCooperationNearbyFilePath = folderPath + "/AverageNearbyCooperation.csv";
 
-        
-    
 
-}
+
+
+    }
 
     // Update is called once per frame
     void Update()
@@ -76,6 +94,10 @@ public class DataCollection : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.D)) {
             ExportDataTableToCSV(masterDataTable, masterDataFilePath);
             ExportDataTableToCSV(stressDataTable, stressDataFilePath);
+            ExportDataTableToCSV(averageStressDataTable, averageStressDataFilePath);
+            ExportDataTableToCSV(closePeers2mDataTable, closePeers2mFilePath);
+            ExportDataTableToCSV(closePeers9mDataTable, closePeers9mFilePath);
+            ExportDataTableToCSV(averageCooperationNearbyDataTable, averageCooperationNearbyFilePath);
 
         }
 
@@ -122,6 +144,125 @@ public class DataCollection : MonoBehaviour
         // Add the new row to the data table
         stressDataTable.Rows.Add(newRow);
     }
+    public void addAverageStressDataRow(int agentID, Dictionary<float, float> averageStressData)
+    {
+        // Convert the dictionary values (stress scores) into a list
+        List<float> stressScores = new List<float>(averageStressData.Values);
+
+        // Check if the table has enough columns; if not, add them
+        while (averageStressDataTable.Columns.Count < stressScores.Count + 1)  // +1 for the AgentID column
+        {
+            averageStressDataTable.Columns.Add("Interval " + averageStressDataTable.Columns.Count);
+        }
+
+        // Create a new data row
+        DataRow newRow = averageStressDataTable.NewRow();
+
+        // Set the agent's ID as the first column's value
+        newRow["AgentID"] = agentID.ToString();
+
+        // Fill in the rest of the columns with stress scores
+        for (int i = 0; i < stressScores.Count; i++)
+        {
+            newRow["Interval " + (i + 1)] = stressScores[i].ToString();
+        }
+
+        // Add the new row to the data table
+        averageStressDataTable.Rows.Add(newRow);
+    }
+
+
+
+
+    public void addClosePeers2mDataRow(int agentID, Dictionary<float, float> closePeers2m)
+    {
+        // Convert the dictionary values (stress scores) into a list
+        List<float> closePeers = new List<float>(closePeers2m.Values);
+
+        // Check if the table has enough columns; if not, add them
+        while (closePeers2mDataTable.Columns.Count < closePeers.Count + 1)  // +1 for the AgentID column
+        {
+            closePeers2mDataTable.Columns.Add("Interval " + closePeers2mDataTable.Columns.Count);
+        }
+
+        // Create a new data row
+        DataRow newRow = closePeers2mDataTable.NewRow();
+
+        // Set the agent's ID as the first column's value
+        newRow["AgentID"] = agentID.ToString();
+
+        // Fill in the rest of the columns with stress scores
+        for (int i = 0; i < closePeers.Count; i++)
+        {
+            newRow["Interval " + (i + 1)] = closePeers[i].ToString();
+        }
+
+        // Add the new row to the data table
+        closePeers2mDataTable.Rows.Add(newRow);
+    }
+
+
+    public void addClosePeers9mDataRow(int agentID, Dictionary<float, float> closePeers9m)
+    {
+        // Convert the dictionary values (stress scores) into a list
+        List<float> closePeers = new List<float>(closePeers9m.Values);
+
+        // Check if the table has enough columns; if not, add them
+        while (closePeers9mDataTable.Columns.Count < closePeers.Count + 1)  // +1 for the AgentID column
+        {
+            closePeers9mDataTable.Columns.Add("Interval " + closePeers9mDataTable.Columns.Count);
+        }
+
+        // Create a new data row
+        DataRow newRow = closePeers9mDataTable.NewRow();
+
+        // Set the agent's ID as the first column's value
+        newRow["AgentID"] = agentID.ToString();
+
+        // Fill in the rest of the columns with stress scores
+        for (int i = 0; i < closePeers.Count; i++)
+        {
+            newRow["Interval " + (i + 1)] = closePeers[i].ToString();
+        }
+
+        // Add the new row to the data table
+        closePeers9mDataTable.Rows.Add(newRow);
+    }
+
+
+    public void addAverageCooperationDataRow(int agentID, Dictionary<float, float> avgCooperation)
+    {
+        // Convert the dictionary values (stress scores) into a list
+        List<float> avgCooperationList = new List<float>(avgCooperation.Values);
+
+        // Check if the table has enough columns; if not, add them
+        while (averageCooperationNearbyDataTable.Columns.Count < avgCooperationList.Count + 1)  // +1 for the AgentID column
+        {
+            averageCooperationNearbyDataTable.Columns.Add("Interval " + averageCooperationNearbyDataTable.Columns.Count);
+        }
+
+        // Create a new data row
+        DataRow newRow = averageCooperationNearbyDataTable.NewRow();
+
+        // Set the agent's ID as the first column's value
+        newRow["AgentID"] = agentID.ToString();
+
+        // Fill in the rest of the columns with stress scores
+        for (int i = 0; i < avgCooperationList.Count; i++)
+        {
+            newRow["Interval " + (i + 1)] = avgCooperationList[i].ToString();
+        }
+
+        // Add the new row to the data table
+        averageCooperationNearbyDataTable.Rows.Add(newRow);
+    }
+
+
+
+
+
+
+
 
     private void ExportDataTableToCSV(DataTable dataTable, string filePath) {
         print("Saving data...");

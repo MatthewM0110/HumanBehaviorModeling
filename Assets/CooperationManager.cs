@@ -12,9 +12,18 @@ public class CooperationManager : MonoBehaviour
     [SerializeField] public float averageCooperationLevel;
     private AgentParameters agentParameters;
 
+    //Data collection
+    private DataCollection dataCollection;
+    public Dictionary<float, float> averageCooperationDict = new Dictionary<float, float>();
+
+    private float timeInterval = 2f;
+    private float interval = 0f;
+
+
     private float originalSpeed;
     void Start()
     {
+        dataCollection = this.gameObject.GetComponent<DataCollection>();
         agentParameters = this.gameObject.GetComponent<AgentParameters>();
         originalSpeed = agentParameters.originalSpeed;
         InvokeRepeating(nameof(CalculateCooperationStress), 0f, 2f);
@@ -45,8 +54,17 @@ public class CooperationManager : MonoBehaviour
 
         cooperationStress = score;
         Debug.Log("Cooperation Score: " + score);
-
+        CollectData(averageCooperation);
         ModifyAgentSpeed();
+
+
+
+    }
+
+    private void CollectData(float averageCooperation)
+    {
+        averageCooperationDict[interval] = averageCooperation;
+        interval += timeInterval;
     }
 
     private void ModifyAgentSpeed()
