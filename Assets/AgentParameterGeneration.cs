@@ -118,9 +118,9 @@ public class AgentParameterGeneration : MonoBehaviour
         
         print("Generate");
         agentPop = 10;
-        float multiplyAgent = 1;
+        
 
-        float scalingFactor = multiplyAgent;  // Renamed from multiplyAgent for clarity
+        float scalingFactor = 1;  // Renamed from multiplyAgent for clarity
         float u1, u2;  // Uniformly-distributed random variables
         float randStdNormal;  // Standard normally-distributed variable
         float randNormal;  // Normally-distributed variable with custom mean and stdDev
@@ -128,10 +128,9 @@ public class AgentParameterGeneration : MonoBehaviour
         try
         {
             //should be a percentage of total peers. Ie 80 will be 80% of normal spawn rates
-            multiplyAgent = int.Parse(agentParameterChances.numberOfAgents.text);
+            scalingFactor = int.Parse(agentParameterChances.numberOfAgents.text);
             //multiplyAgent = 10;
-            multiplyAgent = multiplyAgent / 100;
-            print("agent multiplying" + multiplyAgent);
+            scalingFactor = scalingFactor / 100;
         }
         catch
         {
