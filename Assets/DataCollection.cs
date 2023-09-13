@@ -105,6 +105,11 @@ public class DataCollection : MonoBehaviour
     public void exportData()
     {
         ExportDataTableToCSV(masterDataTable, masterDataFilePath);
+        ExportDataTableToCSV(stressDataTable, stressDataFilePath);
+        ExportDataTableToCSV(averageStressDataTable, averageStressDataFilePath);
+        ExportDataTableToCSV(closePeers2mDataTable, closePeers2mFilePath);
+        ExportDataTableToCSV(closePeers9mDataTable, closePeers9mFilePath);
+        ExportDataTableToCSV(averageCooperationNearbyDataTable, averageCooperationNearbyFilePath);
     }
     public void beginDataCollection() {
         isDataCollecting = true;

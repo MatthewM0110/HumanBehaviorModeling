@@ -57,7 +57,7 @@ public class SimulationManager : MonoBehaviour {
     void Start()
     {
 
-
+        SpawnAgents();
         // Array to hold the target tags
         PrintObjectCountsForTags();
 
@@ -74,7 +74,7 @@ public class SimulationManager : MonoBehaviour {
     }
 
 
-public void OnValidate()
+    public void OnValidate()
     {
         NormalizeWeights();
     }
@@ -101,16 +101,18 @@ public void OnValidate()
 
     }
     // Update is called once per frame
+    private bool dataCollected = false;
     void Update() {
-
+        timeScale = 7;
         currentAgentsDisplay.text = currentAgents.ToString();
-        if(currentAgents <= 0) {
+
+        if(simIsRunning && currentAgents <= 0 && !dataCollected)
+        {
             simIsRunning = false;
-           agentsSpawned = false;
-            //dataCollector.GetComponent<DataCollection>().exportData();
-            //runTest();
-         
+            dataCollector.GetComponent<DataCollection>().exportData();
+            dataCollected = true;
         }
+        
         
     }
 
@@ -118,7 +120,7 @@ public void OnValidate()
 
             agentGenerator.GetComponent<AgentParameterGeneration>().GenerateAgents(); //Access AgentParamGen script and calls GenAgent funct;'
         initialAgentSize = currentAgents;
-       
+        agentsSpawned = true;
     }
 
     public void BeginSimulation() {

@@ -199,7 +199,8 @@ public class AgentParameterGeneration : MonoBehaviour
                         {
                             agentPop = 0;  // Ensure population is non-negative
                         }
-                        Debug.Log($"Case: Small, Agent Population: {agentPop}");
+                        Debug.Log($"Case: Small, Agent Population:" +
+                            $" {agentPop}");
 
                         break;
 
@@ -425,7 +426,7 @@ public class AgentParameterGeneration : MonoBehaviour
 
         // Clamp the value between min and max
         int age = (int)Math.Round(Math.Clamp(randNormal, min, max));
-
+        age = (int)Math.Round(UnityEngine.Random.Range(min, max));
         return age;
     }
     
